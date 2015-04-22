@@ -1,5 +1,3 @@
-require 'forwardable'
-
 module Hobbit
   class Base
     class << self
@@ -22,7 +20,7 @@ module Hobbit
       end
 
       def routes
-        @routes ||= Hash.new { |hash, key| hash[key] = [] }
+        @routes ||= Hash.new { |hash, key| hash[key] = Verb.new }
       end
 
       def stack
@@ -50,7 +48,7 @@ module Hobbit
     private
 
     def route_eval
-      route = find_route
+      route = self.class.routes[request.request_method].route_for(request)
 
       if route
         response.write instance_eval(&route)
@@ -59,21 +57,6 @@ module Hobbit
       end
 
       response.finish
-    end
-
-    def find_route
-      route = self.class.routes[request.request_method].detect do |r|
-        r.compiled_path =~ request.path_info
-      end
-
-      if route
-        $~.captures.each_with_index do |value, index|
-          param = route.extra_params[index]
-          request.params[param] = value
-        end
-      end
-
-      route
     end
   end
 end
