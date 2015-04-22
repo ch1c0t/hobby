@@ -16,12 +16,12 @@ scope Hobbit::Base do
     scope "::#{verb.downcase}" do
       test 'adds a route to @routes' do
         route = app.to_app.class.routes[verb].first
-        assert_equal '/', route[:path]
+        assert_equal '/', route.path
       end
 
       test 'extracts the extra_params' do
         route = app.to_app.class.routes[verb].last
-        assert_equal [:name], route[:extra_params]
+        assert_equal [:name], route.extra_params
       end
     end
   end
@@ -99,64 +99,6 @@ scope Hobbit::Base do
     test 'adds a middleware to the rack stack' do
       get '/use'
       assert_equal 'from use', last_response.body
-    end
-  end
-
-  scope '::compile_route' do
-    def block
-      Proc.new { |env| [200, {}, []] }
-    end
-
-    test 'compiles /' do
-      path = '/'
-      route = Hobbit::Base.send :compile_route, path, &block
-      assert_equal block.call({}), route[:block].call({})
-      assert_equal /^\/$/.to_s, route[:compiled_path].to_s
-      assert_equal [], route[:extra_params]
-      assert_equal path, route[:path]
-    end
-
-    test 'compiles with .' do
-      path = '/route.json'
-      route = Hobbit::Base.send :compile_route, path, &block
-      assert_equal block.call({}), route[:block].call({})
-      assert_equal /^\/route.json$/.to_s, route[:compiled_path].to_s
-      assert_equal [], route[:extra_params]
-      assert_equal path, route[:path]
-    end
-
-    test 'compiles with -' do
-      path = '/hello-world'
-      route = Hobbit::Base.send :compile_route, path, &block
-      assert_equal block.call({}), route[:block].call({})
-      assert_equal /^\/hello-world$/.to_s, route[:compiled_path].to_s
-      assert_equal [], route[:extra_params]
-      assert_equal path, route[:path]
-    end
-
-    test 'compiles with params' do
-      path = '/hello/:name'
-      route = Hobbit::Base.send :compile_route, path, &block
-      assert_equal block.call({}), route[:block].call({})
-      assert_equal /^\/hello\/([^\/?#]+)$/.to_s, route[:compiled_path].to_s
-      assert_equal [:name], route[:extra_params]
-      assert_equal path, route[:path]
-
-      path = '/say/:something/to/:someone'
-      route = Hobbit::Base.send :compile_route, path, &block
-      assert_equal block.call({}), route[:block].call({})
-      assert_equal /^\/say\/([^\/?#]+)\/to\/([^\/?#]+)$/.to_s, route[:compiled_path].to_s
-      assert_equal [:something, :someone], route[:extra_params]
-      assert_equal path, route[:path]
-    end
-
-    test 'compiles with . and params' do
-      path = '/route/:id.json'
-      route = Hobbit::Base.send :compile_route, path, &block
-      assert_equal block.call({}), route[:block].call({})
-      assert_equal /^\/route\/([^\/?#]+).json$/.to_s, route[:compiled_path].to_s
-      assert_equal [:id], route[:extra_params]
-      assert_equal path, route[:path]
     end
   end
 

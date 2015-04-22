@@ -8,7 +8,7 @@ module Hobbit
       def_delegators :stack, :map, :use
 
       %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
-        define_method(verb.downcase) { |path, &block| routes[verb] << compile_route(path, &block) }
+        define_method(verb.downcase) { |path, &block| routes[verb] << Route.new(path, &block) }
       end
 
       alias :_new :new
@@ -27,20 +27,6 @@ module Hobbit
 
       def stack
         @stack ||= Rack::Builder.new
-      end
-
-      private
-
-      def compile_route(path, &block)
-        route = { block: block, compiled_path: nil, extra_params: [], path: path }
-
-        compiled_path = path.gsub(/:\w+/) do |match|
-          route[:extra_params] << match.gsub(':', '').to_sym
-          '([^/?#]+)'
-        end
-        route[:compiled_path] = /^#{compiled_path}$/
-
-        route
       end
     end
 
@@ -67,7 +53,7 @@ module Hobbit
       route = find_route
 
       if route
-        response.write instance_eval(&route[:block])
+        response.write instance_eval(&route)
       else
         response.status = 404
       end
@@ -77,12 +63,12 @@ module Hobbit
 
     def find_route
       route = self.class.routes[request.request_method].detect do |r|
-        r[:compiled_path] =~ request.path_info
+        r.compiled_path =~ request.path_info
       end
 
       if route
         $~.captures.each_with_index do |value, index|
-          param = route[:extra_params][index]
+          param = route.extra_params[index]
           request.params[param] = value
         end
       end
