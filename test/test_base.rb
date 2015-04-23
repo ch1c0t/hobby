@@ -12,20 +12,6 @@ scope Hobbit::Base do
     end
   end
 
-  %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
-    scope "::#{verb.downcase}" do
-      it 'adds a route to @routes' do
-        route = app.to_app.class.routes[verb].first
-        assert_equal '/', route.path
-      end
-
-      it 'extracts the extra_params' do
-        route = app.to_app.class.routes[verb].last
-        assert_equal [:name], route.extra_params
-      end
-    end
-  end
-
   scope '::map' do
     before do
       mock_app do
@@ -60,12 +46,6 @@ scope Hobbit::Base do
       env = { 'PATH_INFO' => '/', 'REQUEST_METHOD' => 'GET' }
       status, headers, body = a.call env
       assert_equal ['hello world'], body
-    end
-  end
-
-  scope '::routes' do
-    it 'returns a Hash' do
-      assert_kind_of Hash, app.to_app.class.routes
     end
   end
 

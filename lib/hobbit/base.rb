@@ -6,7 +6,7 @@ module Hobbit
       def_delegators :stack, :map, :use
 
       %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
-        define_method(verb.downcase) { |path, &block| routes[verb] << Route.new(path, &block) }
+        define_method(verb.downcase) { |path, &block| router.add_route(verb, path, &block) }
       end
 
       alias :_new :new
@@ -19,8 +19,12 @@ module Hobbit
         new.call env
       end
 
-      def routes
-        @routes ||= Hash.new { |hash, key| hash[key] = Verb.new }
+      def router
+        if block_given?
+          @router = yield
+        else
+          @router ||= Router.new
+        end
       end
 
       def stack
@@ -48,7 +52,7 @@ module Hobbit
     private
 
     def route_eval
-      route = self.class.routes[request.request_method].route_for(request)
+      route = self.class.router.route_for(request)
 
       if route
         response.write instance_eval(&route)

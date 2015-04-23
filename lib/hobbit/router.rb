@@ -1,19 +1,15 @@
 module Hobbit
-  class Verb
-    extend Forwardable
-
-    def_delegators :@routes, :first, :last
-
+  class Router
     def initialize
-      @routes = []
+      @routes = Hash.new { |hash, key| hash[key] = [] }
     end
 
-    def <<(route)
-      @routes << route
+    def add_route(verb, path, &block)
+      @routes[verb] << Route.new(path, &block)
     end
 
     def route_for(request)
-      route = @routes.detect do |r|
+      route = @routes[request.request_method].detect do |r|
         r.compiled_path =~ request.path_info
       end
 
