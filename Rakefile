@@ -6,4 +6,6 @@ Rake::TestTask.new do |t|
   t.pattern = 'test/**/*_test.rb'
 end
 
+Rake::TestTask.new :minitest
+
 task default: :test
