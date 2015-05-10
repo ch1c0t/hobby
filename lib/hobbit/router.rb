@@ -1,5 +1,7 @@
 module Hobbit
   class Router
+    require_relative 'router/route'
+
     def initialize
       @routes = Hash.new { |hash, key| hash[key] = [] }
     end
