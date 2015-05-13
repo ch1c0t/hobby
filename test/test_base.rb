@@ -44,8 +44,9 @@ scope Hobbit::Base do
       end
 
       env = { 'PATH_INFO' => '/', 'REQUEST_METHOD' => 'GET' }
-      status, headers, body = a.call env
-      assert_equal ['hello world'], body
+      status, headers, body_proxy = a.call env
+      hobbit_response = body_proxy.instance_variable_get(:@body)
+      assert_equal ['hello world'], hobbit_response.instance_variable_get(:@body)
     end
   end
 
