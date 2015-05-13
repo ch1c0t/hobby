@@ -41,9 +41,10 @@ module Hobbit
     end
 
     def _call(env)
-      @env = env
-      @request = Hobbit::Request.new @env
-      @response = Hobbit::Response.new
+      @env      = env
+      @request  = Request.new @env
+      @response = Response.new
+
       catch(:halt) { route_eval }
     end
 
