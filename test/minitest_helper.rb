@@ -1,7 +1,5 @@
-require 'rack'
+require 'hobbyte'
 require 'rack/test'
-
-require 'hobbit'
 
 require 'minitest-power_assert'
 require 'minitest/autorun'
@@ -15,7 +13,7 @@ module Minitest
     include Rack::Test::Methods
 
     def mock_app(&block)
-      @app = Class.new(Hobbit::Base, &block).new
+      @app = Class.new(Hobbyte::Base, &block).new
     end
 
     def app

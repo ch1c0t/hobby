@@ -1,6 +1,6 @@
 require_relative 'minitest_helper'
 
-scope Hobbit::Base do
+scope Hobbyte::Base do
   before do
     mock_app do
       %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
@@ -37,7 +37,7 @@ scope Hobbit::Base do
 
   scope '::call' do
     it 'creates a new instance and sends the call message' do
-      a = Class.new(Hobbit::Base) do
+      a = Class.new(Hobbyte::Base) do
         get '/' do
           'hello world'
         end

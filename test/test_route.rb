@@ -1,9 +1,9 @@
 require_relative 'minitest_helper'
 
-scope Hobbit::Router::Route do
+scope Hobbyte::Router::Route do
   scope '#initialize' do
     def route path
-      Hobbit::Router::Route.new path, &block
+      Hobbyte::Router::Route.new path, &block
     end
 
     def block

@@ -1,6 +1,6 @@
 require_relative 'minitest_helper'
 
-scope Hobbit::Response do
+scope Hobbyte::Response do
   scope '#initialize' do
     def default_headers
       { 'Content-Type' => 'text/html; charset=utf-8' }
@@ -26,7 +26,7 @@ scope Hobbit::Response do
 =end
 
     it 'sets the body if the body is a string' do
-      response = Hobbit::Response.new 'hello world'
+      response = Hobbyte::Response.new 'hello world'
       assert 200, response.status
       assert default_headers, response.headers
       assert ['hello world'], response.body
@@ -34,14 +34,14 @@ scope Hobbit::Response do
 
     it 'raises a TypeError if body does not respond to :to_str or :each' do
       assert_raises TypeError do
-        Hobbit::Response.new 1
+        Hobbyte::Response.new 1
       end
     end
   end
 
   scope '#[]' do
     def response
-      Hobbit::Response.new
+      Hobbyte::Response.new
     end
 
     it 'responds to #[]' do
@@ -57,7 +57,7 @@ scope Hobbit::Response do
 
   scope '#[]=' do
     def response
-      Hobbit::Response.new
+      Hobbyte::Response.new
     end
 
     it 'responds to #[]=' do
@@ -94,7 +94,7 @@ scope Hobbit::Response do
 =end
 
     it 'calculates the Content-Length of the body' do
-      response = Hobbit::Response.new body, status, headers
+      response = Hobbyte::Response.new body, status, headers
       s, h, b = response.finish
       assert_includes h, 'Content-Length'
       assert_equal '18', h['Content-Length']
@@ -110,7 +110,7 @@ scope Hobbit::Response do
 =end
 
     it 'does not calculate the Content-Length of the body for statuses that do not allow Content-Length headers' do
-      response = Hobbit::Response.new '', 204, {}
+      response = Hobbyte::Response.new '', 204, {}
       s, h, b = response.finish
       assert !h.key?('Content-Length')
     end
@@ -118,7 +118,7 @@ scope Hobbit::Response do
 
   scope '#redirect' do
     def response
-      @response ||= Hobbit::Response.new
+      @response ||= Hobbyte::Response.new
     end
 
     it 'sets the Location header and the status code' do
@@ -136,7 +136,7 @@ scope Hobbit::Response do
 
   scope '#write' do
     def response
-      @response ||= Hobbit::Response.new
+      @response ||= Hobbyte::Response.new
     end
 
     it 'appends the argument to the body of the response' do

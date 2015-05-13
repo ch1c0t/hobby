@@ -1,11 +1,10 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'hobbit/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'hobbit'
-  spec.version       = Hobbit::VERSION
+  spec.name          = 'hobbyte'
+  spec.version       = '0.0.0'
   spec.authors       = ['Patricio Mac Adden']
   spec.email         = ['patriciomacadden@gmail.com']
   spec.description   = %q{A minimalistic microframework built on top of rack}

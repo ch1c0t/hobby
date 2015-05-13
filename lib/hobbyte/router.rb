@@ -1,4 +1,4 @@
-module Hobbit
+module Hobbyte
   class Router
     require_relative 'router/route'
 

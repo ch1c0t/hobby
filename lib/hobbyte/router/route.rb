@@ -1,4 +1,4 @@
-class Hobbit::Router
+class Hobbyte::Router
   class Route
     attr_reader :compiled_path, :extra_params, :path
     def initialize(path, &block)

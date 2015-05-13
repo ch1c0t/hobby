@@ -1,6 +1,6 @@
 require_relative 'minitest_helper'
 
-scope Hobbit::Router do
+scope Hobbyte::Router do
   before do
     mock_app do
       %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|

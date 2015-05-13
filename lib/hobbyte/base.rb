@@ -1,6 +1,4 @@
-module Hobbit
-  autoload :Router, 'hobbit/router'
-
+module Hobbyte
   class Base
     class << self
       extend Forwardable
