@@ -4,8 +4,7 @@ module Hobbit
   class Base
     class << self
       extend Forwardable
-
-      def_delegators :stack, :map, :use
+      delegate [:map, :use] => :stack
 
       %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
         define_method(verb.downcase) { |path, &block| router.add_route(verb, path, &block) }
