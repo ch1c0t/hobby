@@ -7,7 +7,9 @@ module Hobbit
       delegate [:map, :use] => :stack
 
       %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
-        define_method(verb.downcase) { |path, &block| router.add_route(verb, path, &block) }
+        define_method verb.downcase do |path, &route|
+          router.add_route verb, path, &route
+        end
       end
 
       alias :_new :new
