@@ -1,8 +1,19 @@
 module Hobbyte
   class Base
     class << self
-      extend Forwardable
-      delegate [:map, :use] => :stack
+      def members
+        @members ||= {}
+      end
+
+      [:builder, :router].each do |member|
+        define_method member do |&custom_member|
+          if custom_member
+            members[member] = custom_member.call
+          else
+            members[member] ||= Hobbyte.const_get(member.capitalize).new
+          end
+        end
+      end
 
       %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
         define_method verb.downcase do |path, &route|
@@ -12,24 +23,15 @@ module Hobbyte
 
       alias :_new :new
       def new(*args, &block)
-        stack.run _new(*args, &block)
-        stack
+        builder.run _new(*args, &block)
+        builder
       end
+
+      extend Forwardable
+      delegate [:map, :use] => :builder
 
       def call(env)
         new.call env
-      end
-
-      def router
-        if block_given?
-          @router = yield
-        else
-          @router ||= Router.new
-        end
-      end
-
-      def stack
-        @stack ||= Rack::Builder.new
       end
     end
 

@@ -50,12 +50,6 @@ scope Hobbyte::Base do
     end
   end
 
-  scope '::stack' do
-    it 'returns an instance of Rack::Builder' do
-      assert_kind_of Rack::Builder, app.to_app.class.stack
-    end
-  end
-
   scope '::use' do
     before do
       mock_app do
