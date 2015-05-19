@@ -5,12 +5,12 @@ module Hobbyte
         @members ||= {}
       end
 
-      [:builder, :router].each do |member|
+      [:builder, :router, :request, :response].each do |member|
         define_method member do |&custom_member|
           if custom_member
             members[member] = custom_member.call
           else
-            members[member] ||= Hobbyte.const_get(member.capitalize).new
+            members[member] ||= Hobbyte.const_get(member.capitalize).call
           end
         end
       end
@@ -43,8 +43,8 @@ module Hobbyte
 
     def _call(env)
       @env      = env
-      @request  = Request.new @env
-      @response = Response.new
+      @request  = self.class.request.new @env
+      @response = self.class.response.new
 
       catch(:halt) { route_eval }
     end

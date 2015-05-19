@@ -2,10 +2,9 @@ require 'rack'
 require 'forwardable'
 
 module Hobbyte
-  autoload :Router, 'hobbyte/router'
-
-  require 'hobbyte/base'
-  require 'hobbyte/builder'
-  require 'hobbyte/request'
-  require 'hobbyte/response'
+  autoload :Base,     'hobbyte/base'
+  autoload :Builder,  'hobbyte/builder'
+  autoload :Router,   'hobbyte/router'
+  autoload :Request,  'hobbyte/request'
+  autoload :Response, 'hobbyte/response'
 end

@@ -1,4 +1,3 @@
 module Hobbyte
-  class Response < Rack::Response
-  end
+  Response = -> { Rack::Response }
 end

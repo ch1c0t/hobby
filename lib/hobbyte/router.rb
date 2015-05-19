@@ -2,6 +2,7 @@ module Hobbyte
   class Router
     require_relative 'router/route'
 
+    def self.call; new; end
     def initialize
       @routes = Hash.new { |hash, key| hash[key] = [] }
     end

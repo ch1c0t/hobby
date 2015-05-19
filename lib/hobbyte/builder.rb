@@ -1,4 +1,3 @@
 module Hobbyte
-  class Builder < Rack::Builder
-  end
+  Builder = -> { Rack::Builder.new }
 end
