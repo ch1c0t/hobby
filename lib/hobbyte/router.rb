@@ -9,11 +9,12 @@ module Hobbyte
 
     def add_route(verb, path, &block)
       @routes[verb] << Route.new(path, &block)
+      self
     end
 
     def route_for(request)
-      route = @routes[request.request_method].detect do |r|
-        r.compiled_path =~ request.path_info
+      route = @routes[request.request_method].detect do |route|
+        route.compiled_path =~ request.path_info
       end
 
       if route

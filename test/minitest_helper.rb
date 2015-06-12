@@ -19,5 +19,9 @@ module Minitest
     def app
       @app
     end
+
+    def request_to path, request_method: 'GET'
+      Hobbyte::Request.call.new Rack::MockRequest.env_for "http://example.com:8080/#{path}", method: request_method
+    end
   end
 end

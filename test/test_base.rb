@@ -3,7 +3,7 @@ require_relative 'minitest_helper'
 scope Hobbyte::Base do
   before do
     mock_app do
-      %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
+      Hobbyte::Verbs.each do |verb|
         class_eval "#{verb.downcase}('/') { '#{verb}' }"
         class_eval "#{verb.downcase}('/route.json') { '#{verb} /route.json' }"
         class_eval "#{verb.downcase}('/route/:id.json') { request.params[:id] }"
@@ -78,7 +78,7 @@ scope Hobbyte::Base do
   end
 
   scope '#call' do
-    %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
+    Hobbyte::Verbs.each do |verb|
       scope 'when the request matches a route' do
         it "matches #{verb} ''" do
           send verb.downcase, ''

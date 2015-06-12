@@ -1,4 +1,5 @@
 module Hobbyte
+  Verbs = %w!DELETE GET HEAD OPTIONS PATCH POST PUT!
   class Base
     class << self
       def members
@@ -15,7 +16,7 @@ module Hobbyte
         end
       end
 
-      %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
+      Verbs.each do |verb|
         define_method verb.downcase do |path, &route|
           router.add_route verb, path, &route
         end

@@ -2,25 +2,60 @@ require_relative 'minitest_helper'
 
 scope Hobbyte::Router do
   before do
-    mock_app do
-      %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
-        class_eval "#{verb.downcase}('/') { '#{verb}' }"
-        class_eval "#{verb.downcase}('/route.json') { '#{verb} /route.json' }"
-        class_eval "#{verb.downcase}('/route/:id.json') { request.params[:id] }"
-        class_eval "#{verb.downcase}('/:name') { request.params[:name] }"
-      end
-    end
+    @router = Hobbyte::Router.call
+    @route = -> { :wrapped }
   end
 
-  %w(DELETE GET HEAD OPTIONS PATCH POST PUT).each do |verb|
-    it 'adds a route' do
-      route = app.to_app.class.router.instance_variable_get(:@routes)[verb].first
-      assert { route.path == '/' }
-    end
+  it 'works' do
+    @router.add_route 'GET', '/ololo', &@route
 
-    it 'extracts the extra_params' do
-      route = app.to_app.class.router.instance_variable_get(:@routes)[verb].last
-      assert { route.extra_params == [:name] }
-    end
+    route = @router.route_for request_to 'ololo'
+    assert { route.to_proc.call == :wrapped }
+
+    route = @router.route_for request_to 'ololo2'
+    assert { route.nil? }
+
+    route = @router.route_for request_to 'ololo', request_method: 'POST'
+    assert { route.nil? }
+  end
+
+  it 'with .' do
+    @router.add_route 'GET', '/route.json', &@route
+
+    route = @router.route_for request_to 'route.json'
+    assert { route.to_proc.call == :wrapped }
+  end
+
+  it 'with -' do
+    @router.add_route 'GET', '/hello-world', &@route
+
+    route = @router.route_for request_to 'hello-world'
+    assert { route.to_proc.call == :wrapped }
+  end
+
+  it 'with params' do
+    @router
+      .add_route 'GET', '/hello/:name' do :first end
+      .add_route 'GET', '/say/:something/to/:someone' do :second end
+
+    request = request_to 'hello/ololo'
+    route = @router.route_for request
+    assert { route.to_proc.call == :first }
+    assert { request.params[:name] == 'ololo'}
+
+    request = request_to 'say/nothing/to/no_one'
+    route = @router.route_for request
+    assert { route.to_proc.call == :second }
+    assert { request.params[:something] == 'nothing'}
+    assert { request.params[:someone] == 'no_one'}
+  end
+
+  it 'with . and params' do
+    @router.add_route 'GET', '/route/:id.json', &@route
+
+    request = request_to 'route/42.json'
+    route = @router.route_for request
+    assert { route.to_proc.call == :wrapped }
+    assert { request.params[:id] == '42' }
   end
 end
