@@ -42,14 +42,10 @@ module Hobby
       @request  = Request.new @env
       @response = Response.new
 
-      catch(:halt) { route_eval }
+      route_eval
     end
 
     private
-
-    def halt response
-      throw :halt, response
-    end
 
     def route_eval
       route = self.class.router.route_for request

@@ -123,11 +123,11 @@ describe Hobby::App do
       mock_app do
         get '/halt' do
           response.status = 501
-          halt response.finish
         end
 
         get '/halt_finished' do
-          halt [404, {}, ['Not found']]
+          response.status = 404
+          'Not found'
         end
       end
     end
