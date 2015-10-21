@@ -1,5 +1,4 @@
 require 'rack'
-require 'forwardable'
 require 'include_constants'
 
 module Hobby

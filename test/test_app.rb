@@ -146,16 +146,14 @@ describe Hobby::App do
   describe :router_app do
     before do
       mock_app do
-        router do
-          Class.new do
-            def add_route(*)
-            end
+        const_set :Router, Class.new {
+          def add_route(*)
+          end
 
-            def route_for _request
-              Proc.new { 'for any route' }
-            end
-          end.new
-        end
+          def route_for _request
+            Proc.new { 'for any route' }
+          end
+        }.new
       end
     end
 
@@ -171,7 +169,7 @@ describe Hobby::App do
   describe :custom_members do
     before do
       mock_app do
-        builder { Rack::Builder.new }
+        const_set :Builder, Rack::Builder.new
         Request = Rack::Request
         Response = Rack::Response
 

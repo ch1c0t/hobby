@@ -1,34 +1,26 @@
 module Hobby
   class App
-    class << self
-      def members
-        @members ||= {}
-      end
+    def self.inherited subclass
+      subclass.const_set :Router, Router.new
+      subclass.const_set :Builder, Builder.new
 
-      [:builder, :router].each do |member|
-        define_method member do |&custom_member|
-          if custom_member
-            members[member] = custom_member.call
-          else
-            members[member] ||= Hobby.const_get(member.capitalize).new
+      class << subclass
+        Verbs.each do |verb|
+          define_method verb.downcase do |path, &route|
+            self::Router.add_route verb, path, &route
           end
         end
-      end
 
-      Verbs.each do |verb|
-        define_method verb.downcase do |path, &route|
-          router.add_route verb, path, &route
+        alias_method :_new, :new
+        def new *args, &block
+          self::Builder.run _new *args, &block
+          self::Builder
+        end
+
+        def method_missing method, *args, &block
+          self::Builder.send method, *args, &block if [:map, :use].include? method
         end
       end
-
-      alias :_new :new
-      def new *args, &block
-        builder.run _new(*args, &block)
-        builder
-      end
-
-      extend Forwardable
-      delegate [:map, :use] => :builder
     end
 
     attr_reader :env, :request, :response
@@ -48,7 +40,7 @@ module Hobby
     private
 
     def route_eval
-      route = self.class.router.route_for request
+      route = self.class::Router.route_for request
 
       if route
         response.write instance_eval &route
