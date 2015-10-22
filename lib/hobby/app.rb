@@ -34,12 +34,6 @@ module Hobby
       @request  = Request.new @env
       @response = Response.new
 
-      route_eval
-    end
-
-    private
-
-    def route_eval
       route = self.class::Router.route_for request
 
       if route
