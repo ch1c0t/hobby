@@ -14,7 +14,7 @@ module Hobby
         alias_method :_new, :new
         def new *args, &block
           self::Builder.run _new *args, &block
-          self::Builder
+          self::Builder.to_app
         end
 
         def method_missing method, *args, &block
