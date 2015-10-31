@@ -62,4 +62,12 @@ describe Hobby::Router do
     assert { route.to_proc.call == :wrapped }
     assert { request.params[:id] == '42' }
   end
+
+  it 'handle empty path as /' do
+    @router.add_route 'GET' do :root end
+
+    request = Hobby::Request.new Rack::MockRequest.env_for 'http://localhost'
+    route = @router.route_for request
+    assert { route.call == :root }
+  end
 end

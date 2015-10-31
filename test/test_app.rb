@@ -184,4 +184,19 @@ describe Hobby::App do
       assert { last_response.body == 'it works' }
     end
   end
+
+  describe :without_path do
+    before do
+      mock_app do
+        get do
+          'root'
+        end
+      end
+    end
+
+    it 'is accessible as /' do
+      get '/'
+      assert { last_response.body == 'root' }
+    end
+  end
 end

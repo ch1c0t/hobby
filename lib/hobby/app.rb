@@ -6,8 +6,8 @@ module Hobby
 
       class << subclass
         Verbs.each do |verb|
-          define_method verb.downcase do |path, &route|
-            self::Router.add_route verb, path, &route
+          define_method verb.downcase do |path = nil, &route|
+            self::Router.add_route verb, *path, &route
           end
         end
 

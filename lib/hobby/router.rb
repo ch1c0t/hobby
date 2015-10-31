@@ -14,13 +14,13 @@ module Hobby
       end
     end
 
-    def add_route verb, path, &route
+    def add_route verb, path = '/', &route
       @patterns[verb] << Pattern.new(path, route)
       self
     end
 
     def route_for request
-      verb, path = request.request_method, request.path_info
+      verb, path = request.request_method, (request.path_info.empty? ? '/' : request.path_info)
       route, params = @routes[verb][path]
       request.params.merge! params if params
       route
