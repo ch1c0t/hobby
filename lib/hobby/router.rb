@@ -10,7 +10,8 @@ module Hobby
     end
 
     def route_for request
-      route, params = @routes["#{request.request_method}#{request.path_info}"]
+      verb, path = request.request_method, request.path_info
+      route, params = @routes["#{verb}#{path.empty? ? '/' : path}"]
       request.params.merge! params if params
       route
     end

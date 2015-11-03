@@ -66,7 +66,8 @@ describe Hobby::Router do
   it 'handle empty path as /' do
     @router.add_route 'GET' do :root end
 
-    request = Hobby::Request.new Rack::MockRequest.env_for 'http://localhost'
+    env = { 'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '' }
+    request = Hobby::Request.new env
     route = @router.route_for request
     assert { route.call == :root }
   end
