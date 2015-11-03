@@ -24,7 +24,8 @@ module Hobby
 
       def []= key, route
         if key.include? ?:
-          @patterns[/^#{key.gsub(/(:\w+)/){"(?<#{$1[1..-1]}>[^/?#]+)"}}$/] = route
+          string = key.gsub(/(:\w+)/) { "(?<#{$1[1..-1]}>[^/?#]+)" }
+          @patterns[/^#{string}$/] = route
         else
           super
         end
