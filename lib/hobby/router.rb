@@ -35,7 +35,7 @@ module Hobby
 
       def find key
         _, route = @patterns.find { |pattern, _| pattern.match key }
-        route ? [route, $~.names.map(&:to_sym).zip($~.captures).to_h] : nil
+        [route, $~.names.map(&:to_sym).zip($~.captures).to_h] if route
       end
     end
   end
