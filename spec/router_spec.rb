@@ -68,4 +68,11 @@ describe Hobby::Router do
     route = subject.route_for request
     assert { route.call == :root }
   end
+
+  it 'memoizes the requests with params' do
+    subject.add_route 'GET', '/hello/:name' do 'it memoizes' end
+    subject.route_for request_to 'hello/ololo'
+
+    assert { subject.instance_variable_get(:@routes).include? 'GET/hello/ololo' }
+  end
 end
