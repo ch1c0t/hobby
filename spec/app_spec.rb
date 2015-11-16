@@ -116,4 +116,14 @@ describe Hobby::App do
       assert { last_response.body == 'it works' }
     end
   end
+
+  describe Env do
+    it do
+      get '/ping?1=2&3=4'
+      assert { last_response.body == '1=2&3=4' }
+
+      get '/ping?why=42'
+      assert { last_response.body == 'why=42' }
+    end
+  end
 end
