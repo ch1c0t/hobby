@@ -31,7 +31,7 @@ module Hobby
 
     def handle env
       @env      = env
-      @request  = Request.new @env
+      @request  = Request.new env
       @response = Response.new
 
       route = self.class::Router.route_for request
@@ -42,7 +42,7 @@ module Hobby
         response.status = 404
       end
 
-      response.finish
+      response
     end
   end
 end
