@@ -1,4 +1,4 @@
-Router = Class.new {
+self.router = Class.new {
   def add_route(*)
   end
 

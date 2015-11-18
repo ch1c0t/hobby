@@ -1,5 +1,6 @@
 require 'rack'
 require 'include_constants'
+require 'forwardable'
 
 module Hobby
   Verbs = %w!DELETE GET HEAD OPTIONS PATCH POST PUT!

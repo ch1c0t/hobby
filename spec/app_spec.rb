@@ -6,7 +6,8 @@ Dir['spec/apps/*.rb'].each do |file|
   body = IO.read file
 
   eval %!
-    class #{name} < Hobby::App
+    class #{name}
+      include Hobby::App
       #{body}
     end
   !

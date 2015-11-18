@@ -1,24 +1,24 @@
 module Hobby
-  class App
-    def self.inherited subclass
-      subclass.const_set :Router, Router.new
-      subclass.const_set :Builder, Builder.new
+  module App
+    def self.included app
+      app.extend Singleton
+      app.builder, app.router = Builder.new, Router.new
+    end
 
-      class << subclass
-        Verbs.each do |verb|
-          define_method verb.downcase do |path = nil, &route|
-            self::Router.add_route verb, *path, &route
-          end
-        end
+    module Singleton
+      attr_accessor :builder, :router
 
-        alias_method :_new, :new
-        def new *args, &block
-          self::Builder.run _new *args, &block
-          self::Builder.to_app
-        end
+      def new *args, &block
+        builder.run super
+        builder.to_app
+      end
 
-        def method_missing method, *args, &block
-          self::Builder.send method, *args, &block if [:map, :use].include? method
+      extend Forwardable
+      delegate [:map, :use] => :builder
+
+      Verbs.each do |verb|
+        define_method verb.downcase do |path = nil, &route|
+          router.add_route verb, *path, &route
         end
       end
     end
@@ -34,7 +34,7 @@ module Hobby
       @request  = Request.new env
       @response = Response.new
 
-      route = self.class::Router.route_for request
+      route = self.class.router.route_for request
 
       if route
         response.write instance_eval &route
