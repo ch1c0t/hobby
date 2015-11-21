@@ -1,23 +1,39 @@
 require 'helper'
 require 'rack/test'
 
+$sources = {}
+
 Dir['spec/apps/*.rb'].each do |file|
   name = File.basename file, '.rb'
-  body = IO.read file
+  $sources[file] = IO.read file
 
   eval %!
     class #{name}
+    end
+  !
+end
+
+def define_app_in described_class
+  file = "spec/apps/#{described_class}.rb"
+  body = $sources[file]
+
+  described_class.const_set :App, (eval %!
+    Class.new do
       include Hobby::App
       #{body}
     end
-  !
+  !, TOPLEVEL_BINDING)
 end
 
 describe Hobby::App do
   include Rack::Test::Methods
 
+  before :each do
+    define_app_in described_class
+  end
+
   def app
-    described_class.new
+    described_class::App.new
   end
 
   describe Main do
