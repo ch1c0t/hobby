@@ -8,7 +8,7 @@ module Hobby
     module Singleton
       attr_accessor :builder, :router
 
-      def new *args, &block
+      def new (*)
         builder.run super
         builder.to_app
       end

@@ -89,6 +89,10 @@ describe Hobby::App do
       get '/map'
       assert { last_response.body == 'from map' }
     end
+
+    it 'creates not a Builder' do
+      assert { not app.is_a? Hobby::Builder }
+    end
   end
 
   describe Use do
@@ -107,6 +111,13 @@ describe Hobby::App do
     it 'halts the execution with a finished response' do
       get '/halt_finished'
       assert { last_response.status == 404 }
+    end
+
+    it do
+      get '/increment_instance_variable'
+      assert { last_response.body == '1' }
+      get '/increment_instance_variable'
+      assert { last_response.body == '1' }
     end
   end
 
@@ -141,6 +152,13 @@ describe Hobby::App do
 
       get '/ping?why=42'
       assert { last_response.body == 'why=42' }
+    end
+  end
+
+  describe Nested do
+    it do
+      get '/nested'
+      assert { last_response.body == 'a:b:c' }
     end
   end
 end
