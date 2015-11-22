@@ -138,13 +138,6 @@ describe Hobby::App do
     end
   end
 
-  describe CustomMembers do
-    it 'works' do
-      get '/'
-      assert { last_response.body == 'it works' }
-    end
-  end
-
   describe Env do
     it do
       get '/ping?1=2&3=4'
