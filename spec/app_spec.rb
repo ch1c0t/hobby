@@ -31,130 +31,140 @@ end
 describe Hobby::App do
   include Rack::Test::Methods
 
-  before do
-    described_class.app = build_app described_class
+  describe '.new' do
+    context 'an app with nested app(s)' do
+      let(:subject) { build_app(Nested).new }
+      it { is_expected.to be_a Rack::URLMap }
+    end
+
+    context 'an app without nested app(s)' do
+      let(:subject) { build_app(Main).new }
+      it { is_expected.to be_a Hobby::App }
+    end
   end
 
-  def app
-    described_class.app.new
-  end
+  describe :integration do
+    before do
+      described_class.app = build_app described_class
+    end
 
-  describe Main do
-    Hobby::Verbs.each do |verb|
-      context 'when the request matches a route' do
-        it "matches #{verb} ''" do
-          send verb.downcase, ''
-          assert { last_response.ok? }
-          assert { verb == last_response.body }
+    def app
+      described_class.app.new
+    end
+
+    describe Main do
+      Hobby::Verbs.each do |verb|
+        context 'when the request matches a route' do
+          it "matches #{verb} ''" do
+            send verb.downcase, ''
+            assert { last_response.ok? }
+            assert { verb == last_response.body }
+          end
+
+          it 'matches #{verb} /' do
+            send verb.downcase, '/'
+            assert { last_response.ok? }
+            assert { verb == last_response.body }
+          end
+
+          it 'matches #{verb} /route.json' do
+            send verb.downcase, '/route.json'
+            assert { last_response.ok? } 
+            assert { "#{verb} /route.json" == last_response.body }
+          end
+
+          it 'matches #{verb} /route/:id.json' do
+            send verb.downcase, '/route/1.json'
+            assert { last_response.ok? }
+            assert { last_response.body == '1' }
+          end
+
+          it 'matches #{verb} /:name' do
+            send verb.downcase, '/hobbit'
+            assert { last_response.ok? }
+            assert { last_response.body == 'hobbit' }
+
+            send verb.downcase, '/hello-hobbit'
+            assert { last_response.ok? }
+            assert { last_response.body == 'hello-hobbit' }
+          end
         end
 
-        it 'matches #{verb} /' do
-          send verb.downcase, '/'
-          assert { last_response.ok? }
-          assert { verb == last_response.body }
-        end
-
-        it 'matches #{verb} /route.json' do
-          send verb.downcase, '/route.json'
-          assert { last_response.ok? } 
-          assert { "#{verb} /route.json" == last_response.body }
-        end
-
-        it 'matches #{verb} /route/:id.json' do
-          send verb.downcase, '/route/1.json'
-          assert { last_response.ok? }
-          assert { last_response.body == '1' }
-        end
-
-        it 'matches #{verb} /:name' do
-          send verb.downcase, '/hobbit'
-          assert { last_response.ok? }
-          assert { last_response.body == 'hobbit' }
-
-          send verb.downcase, '/hello-hobbit'
-          assert { last_response.ok? }
-          assert { last_response.body == 'hello-hobbit' }
+        context 'when the request not matches a route' do
+          it 'responds with 404 status code' do
+            send verb.downcase, '/not/found'
+            assert { last_response.not_found? }
+            assert { last_response.body.empty? }
+          end
         end
       end
+    end
 
-      context 'when the request not matches a route' do
-        it 'responds with 404 status code' do
-          send verb.downcase, '/not/found'
-          assert { last_response.not_found? }
-          assert { last_response.body.empty? }
-        end
+    describe Map do
+      it 'mounts an application to the rack stack' do
+        get '/map'
+        assert { last_response.body == 'from map' }
       end
     end
-  end
 
-  describe Map do
-    it 'mounts an application to the rack stack' do
-      get '/map'
-      assert { last_response.body == 'from map' }
+    describe Use do
+      it 'adds a middleware to the rack stack' do
+        get '/use'
+        assert { last_response.body == 'from use' }
+      end
     end
 
-    it 'creates not a Builder' do
-      assert { not app.is_a? Hobby::Builder }
-    end
-  end
+    describe Halt do
+      it 'halts the execution with a response' do
+        get '/halt'
+        assert { last_response.status == 501 }
+      end
 
-  describe Use do
-    it 'adds a middleware to the rack stack' do
-      get '/use'
-      assert { last_response.body == 'from use' }
-    end
-  end
+      it 'halts the execution with a finished response' do
+        get '/halt_finished'
+        assert { last_response.status == 404 }
+      end
 
-  describe Halt do
-    it 'halts the execution with a response' do
-      get '/halt'
-      assert { last_response.status == 501 }
-    end
-
-    it 'halts the execution with a finished response' do
-      get '/halt_finished'
-      assert { last_response.status == 404 }
+      it do
+        get '/increment_instance_variable'
+        assert { last_response.body == '1' }
+        get '/increment_instance_variable'
+        assert { last_response.body == '1' }
+      end
     end
 
-    it do
-      get '/increment_instance_variable'
-      assert { last_response.body == '1' }
-      get '/increment_instance_variable'
-      assert { last_response.body == '1' }
+    describe WithoutPath do
+      it 'is accessible as /' do
+        get '/'
+        assert { last_response.body == 'root' }
+      end
     end
-  end
 
-  describe WithoutPath do
-    it 'is accessible as /' do
-      get '/'
-      assert { last_response.body == 'root' }
+    describe OneRouteRouter do
+      it 'returns for any route' do
+        get '/'
+        assert { last_response.body == 'for any route' }
+
+        get '/some-other-route'
+        assert { last_response.body == 'for any route' }
+      end
     end
-  end
 
-  describe OneRouteRouter do
-    it 'returns for any route' do
-      get '/'
-      assert { last_response.body == 'for any route' }
+    describe Env do
+      it do
+        get '/ping?1=2&3=4'
+        assert { last_response.body == '1=2&3=4' }
 
-      get '/some-other-route'
-      assert { last_response.body == 'for any route' }
+        get '/ping?why=42'
+        assert { last_response.body == 'why=42' }
+      end
     end
-  end
 
-  describe Env do
-    it do
-      get '/ping?1=2&3=4'
-      assert { last_response.body == '1=2&3=4' }
-
-      get '/ping?why=42'
-      assert { last_response.body == 'why=42' }
-    end
-  end
-
-  describe Nested do
-    it do
-      get '/nested'
-      assert { last_response.body == 'a:b:c' }
+    describe Nested do
+      it do
+        get '/nested'
+        assert { last_response.body == 'a:b:c' }
+      end
     end
   end
 end
