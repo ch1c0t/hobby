@@ -5,35 +5,38 @@ $sources = {}
 
 Dir['spec/apps/*.rb'].each do |file|
   name = File.basename file, '.rb'
-  $sources[file] = IO.read file
 
   eval %!
     class #{name}
+      class << self
+        attr_accessor :app
+      end
     end
   !
+
+  $sources[Object.const_get name] = IO.read file
 end
 
-def define_app_in described_class
-  file = "spec/apps/#{described_class}.rb"
-  body = $sources[file]
+def build_app described_class
+  body = $sources[described_class]
 
-  described_class.const_set :App, (eval %!
+  eval %!
     Class.new do
       include Hobby::App
       #{body}
     end
-  !, TOPLEVEL_BINDING)
+  !
 end
 
 describe Hobby::App do
   include Rack::Test::Methods
 
-  before :each do
-    define_app_in described_class
+  before do
+    described_class.app = build_app described_class
   end
 
   def app
-    described_class::App.new
+    described_class.app.new
   end
 
   describe Main do
