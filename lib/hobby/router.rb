@@ -28,6 +28,7 @@ module Hobby
           @patterns[/^#{string}$/] = route
         else
           super
+          super "#{key}/", route unless key.end_with? '/'
         end
       end
 

@@ -165,6 +165,20 @@ describe Hobby::App do
         get '/nested'
         assert { last_response.body == 'a:b:c' }
       end
+
+      it 'should be able to access a route with and without /' do
+        get '/nested/route'
+        assert { last_response.body == 'nested route' }
+
+        get '/nested/route/'
+        assert { last_response.body == 'nested route' }
+
+        get '/nested/path_variable'
+        assert { last_response.body == 'path_variable' }
+
+        get '/nested/path_variable/'
+        assert { last_response.body == 'path_variable' }
+      end
     end
   end
 end

@@ -16,4 +16,12 @@ class NestedApp
   get do
     "#{@a}:#{@b}:#{@c}"
   end
+
+  get '/route' do
+    'nested route'
+  end
+
+  get '/:route' do
+    request.params[:route]
+  end
 end
