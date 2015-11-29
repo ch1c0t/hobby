@@ -12,3 +12,7 @@ get '/increment_instance_variable' do
   @instance_variable += 1
   @instance_variable.to_s
 end
+
+get '/route' do
+  'nested route'
+end

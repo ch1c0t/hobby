@@ -4,14 +4,14 @@ module Hobby
       @routes = Routes.new
     end
 
-    def add_route verb, path = '/', &route
+    def add_route verb, path = nil, &route
       @routes["#{verb}#{path}"] = route
       self
     end
 
     def route_for request
       verb, path = request.request_method, request.path_info
-      route, params = @routes["#{verb}#{path.empty? ? '/' : path}"]
+      route, params = @routes["#{verb}#{path}"]
       request.params.merge! params if params
       route
     end
@@ -27,8 +27,7 @@ module Hobby
           string = key.gsub(/(:\w+)/) { "(?<#{$1[1..-1]}>[^/?#]+)" }
           @patterns[/^#{string}$/] = route
         else
-          super
-          super "#{key}/", route unless key.end_with? '/'
+          super and super "#{key}/", route
         end
       end
 

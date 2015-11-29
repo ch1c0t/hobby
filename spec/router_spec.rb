@@ -75,4 +75,16 @@ describe Hobby::Router do
 
     assert { subject.instance_variable_get(:@routes).include? 'GET/hello/ololo' }
   end
+
+  it do
+    subject.add_route 'GET', '/hello' do 'it works' end
+
+    request = Hobby::Request.new({'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/hello' })
+    route = subject.route_for request
+    assert {route.call == 'it works'}
+
+    request = Hobby::Request.new({'REQUEST_METHOD' => 'GET', 'PATH_INFO' => '/hello/' })
+    route = subject.route_for request
+    assert {route.call == 'it works'}
+  end
 end

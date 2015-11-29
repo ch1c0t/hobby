@@ -131,6 +131,24 @@ describe Hobby::App do
         get '/increment_instance_variable'
         assert { last_response.body == '1' }
       end
+
+      it do
+        get '/route'
+        assert { last_response.body == 'nested route' }
+
+        get '/route/'
+        assert { last_response.body == 'nested route' }
+      end
+
+      it do
+        browser = Rack::Test::Session.new Rack::MockSession.new (build_app described_class).new
+
+        browser.get '/route'
+        assert { browser.last_response.body == 'nested route' }
+
+        browser.get '/route/'
+        assert { browser.last_response.body == 'nested route' }
+      end
     end
 
     describe WithoutPath do
