@@ -22,6 +22,6 @@ class NestedApp
   end
 
   get '/:route' do
-    request.params[:route]
+    my[:route]
   end
 end

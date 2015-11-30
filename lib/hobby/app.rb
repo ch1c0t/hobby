@@ -30,9 +30,7 @@ module Hobby
 
     protected
       def handle env
-        @env = env
-
-        route = self.class.router.route_for request
+        route = self.class.router.route_for (@env = env)
 
         if route
           response.write instance_eval &route
@@ -52,6 +50,10 @@ module Hobby
 
       def response
         @response ||= self.class.response.new
+      end
+
+      def my
+        env.fetch :path_params, {}
       end
   end
 end

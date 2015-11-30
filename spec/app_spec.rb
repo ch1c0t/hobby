@@ -176,6 +176,19 @@ describe Hobby::App do
         get '/ping?why=42'
         assert { last_response.body == 'why=42' }
       end
+
+      it do
+        get '/for_request?key=value'
+        assert { last_response.body == 'value' }
+      end
+
+      it do
+        get '/for_my'
+        assert { last_response.body == 'true' }
+
+        get '/for_direct_path_params'
+        assert { last_response.body == 'true' }
+      end
     end
 
     describe Nested do

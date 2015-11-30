@@ -9,10 +9,10 @@ module Hobby
       self
     end
 
-    def route_for request
-      verb, path = request.request_method, request.path_info
+    def route_for env
+      verb, path = env['REQUEST_METHOD'], env['PATH_INFO']
       route, params = @routes["#{verb}#{path}"]
-      request.params.merge! params if params
+      env[:path_params] = params if params
       route
     end
 
