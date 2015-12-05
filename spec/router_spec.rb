@@ -1,93 +1,95 @@
 require 'helper'
 
+MAGIC_NUMBER = 42
+
+class FindRoute
+  def initialize path, verb
+    @path, @verb = path, verb
+    @env = env_for @path, @verb
+    @params_check = -> { true }
+  end
+
+  def matches? subject
+    route = subject.route_for @env
+    route.respond_to?(:call) && (route.call == MAGIC_NUMBER) && @params_check.call
+  end
+
+  def and_set_params **params
+    @params_check = -> {(params.to_a - @env[:path_params].to_a).empty?}
+    self
+  end
+
+  def env_for path, verb
+    {'REQUEST_METHOD' => verb, 'PATH_INFO' => path }
+  end
+
+  def description
+    'be found'
+  end
+
+  def failure_message
+    "Where is a route for #{@path}?"
+  end
+end
+
 describe Hobby::Router do
-  def env_for path, request_method = 'GET'
-    {'REQUEST_METHOD' => request_method, 'PATH_INFO' => path }
+  def add_routes *routes, verb: 'GET'
+    block = -> { MAGIC_NUMBER }
+    routes.each { |route| subject.add_route verb, route, &block }
   end
 
-  subject { described_class.new }
-
-  it 'works' do
-    subject.add_route('GET', '/ololo') { 42 }
-
-    route = subject.route_for env_for '/ololo'
-    assert { route.call == 42 }
-
-    route = subject.route_for env_for '/ololo2'
-    assert { route.nil? }
-
-    route = subject.route_for env_for '/ololo', 'POST'
-    assert { route.nil? }
+  before do
+    add_routes '/route.json', '/with-hyphen', '/hello/:name',
+      '/say/:something/to/:someone', '/route/:id.json'
   end
 
-  it 'with .' do
-    subject.add_route('GET', '/route.json') { 42 }
-
-    route = subject.route_for env_for '/route.json'
-    assert { route.call == 42 }
+  def find_route route, verb = 'GET'
+    FindRoute.new route, verb
   end
 
-  it 'with -' do
-    subject.add_route('GET', '/hello-world') { 42 }
+  it { should find_route '/route.json' }
+  it { should find_route '/with-hyphen' }
+  it { should find_route '/route.json/' }
+  it { should find_route '/with-hyphen/' }
+  it { should_not find_route '/nonexistent' }
+  it { should_not find_route '/route.json', 'POST' }
 
-    route = subject.route_for env_for '/hello-world'
-    assert { route.call == 42 }
+  it { should find_route('/hello/ololo').and_set_params(name: 'ololo') }
+  it { should find_route('/route/66.json').and_set_params(id: '66') }
+  it do
+    should find_route('/say/nothing/to/no_one').
+           and_set_params(something: 'nothing', someone: 'no_one')
   end
 
-  it 'with params' do
-    subject
-      .add_route 'GET', '/hello/:name' do :first end
-      .add_route 'GET', '/say/:something/to/:someone' do :second end
 
-    env = env_for '/hello/ololo'
-    route = subject.route_for env
-    assert { route.call == :first }
-    assert { env[:path_params][:name] == 'ololo'}
-
-    env = env_for '/say/nothing/to/no_one'
-    route = subject.route_for env
-    assert { route.call == :second }
-    assert { env[:path_params][:something] == 'nothing'}
-    assert { env[:path_params][:someone] == 'no_one'}
+  def env_for path, verb = 'GET'
+    {'REQUEST_METHOD' => verb, 'PATH_INFO' => path }
   end
 
-  it 'with . and params' do
-    subject.add_route('GET', '/route/:id.json') { 42 }
-
-    env = env_for '/route/42.json'
-    route = subject.route_for env
-    assert { route.call == 42 }
-    assert { env[:path_params][:id] == '42' }
-  end
-
-  it 'handle empty path as /' do
+  it 'handles empty path as /' do
     subject.add_route 'GET' do :root end
-
     route = subject.route_for env_for ''
+
     assert { route.call == :root }
   end
 
-  it 'memoizes the requests with params' do
-    subject.add_route 'GET', '/hello/:name' do 'it memoizes' end
+  it 'memoizes requests with params' do
     subject.route_for env_for '/hello/ololo'
 
     assert { subject.instance_variable_get(:@routes).include? 'GET/hello/ololo' }
   end
 
-  it do
-    subject.add_route 'GET', '/hello' do 'it works' end
-
-    route = subject.route_for env_for '/hello'
-    assert {route.call == 'it works'}
-
-    route = subject.route_for env_for '/hello/'
-    assert {route.call == 'it works'}
-  end
-
-  it do
+  it 'does not touch path params when there is nothing to set'do
     env = env_for ''
     subject.route_for env
     
     assert { env.fetch(:path_params, {}).is_a? Hash }
+  end
+
+  it 'sets path params when needed' do
+    env = env_for '/hello/ololo'
+    subject.route_for env
+
+    assert { env[:path_params].is_a? Hash }
   end
 end

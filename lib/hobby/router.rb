@@ -6,12 +6,10 @@ module Hobby
 
     def add_route verb, path = nil, &route
       @routes["#{verb}#{path}"] = route
-      self
     end
 
     def route_for env
-      verb, path = env['REQUEST_METHOD'], env['PATH_INFO']
-      route, params = @routes["#{verb}#{path}"]
+      route, params = @routes["#{env['REQUEST_METHOD']}#{env['PATH_INFO']}"]
       env[:path_params] = params if params
       route
     end
