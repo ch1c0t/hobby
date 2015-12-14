@@ -1,15 +1,15 @@
-get '/ping' do
+get '/query_string' do
   env['QUERY_STRING']
 end
 
-get '/for_request' do
+get '/access_params' do
   request.params['key']
 end
 
-get '/for_my' do
+get '/access_path_params_via_my' do
   my[:key].nil?
 end
 
-get '/for_direct_path_params' do
+get '/access_path_params_via_env' do
   env[:path_params].nil?
 end

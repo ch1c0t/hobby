@@ -1,27 +1,17 @@
 map('/nested') do
-  run NestedApp.new(:a, :b) {
-    :c
-  }
-end
+  nested_app = Class.new do
+    include Hobby::App
 
-class NestedApp
-  include Hobby::App
+    def initialize first, second
+      @a = first
+      @b = second
+      @c = yield
+    end
 
-  def initialize first, second
-    @a = first
-    @b = second
-    @c = yield
+    get do
+      "#{@a}:#{@b}:#{@c}"
+    end
   end
 
-  get do
-    "#{@a}:#{@b}:#{@c}"
-  end
-
-  get '/route' do
-    'nested route'
-  end
-
-  get '/:route' do
-    my[:route]
-  end
+  run nested_app.new(:a, :b) { :c }
 end

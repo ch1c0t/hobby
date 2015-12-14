@@ -34,12 +34,45 @@ describe Hobby::App do
   describe '.new' do
     context 'an app with nested app(s)' do
       let(:subject) { build_app(Nested).new }
-      it { is_expected.to be_a Rack::URLMap }
+      it { should be_a Rack::URLMap }
     end
 
     context 'an app without nested app(s)' do
       let(:subject) { build_app(Main).new }
-      it { is_expected.to be_a Hobby::App }
+      it { should be_a Hobby::App }
+    end
+  end
+
+  describe '#call' do
+    def app
+      build_app(Main).new
+    end
+
+    context 'when a route was found' do
+      it 'evaluates the route' do
+        get '/existent'
+
+        assert { last_response.ok? }
+        assert { last_response.body == 'existent' }
+      end
+    end
+
+    context 'when a route was not found' do
+      it 'responds with 404 status code' do
+        get '/nonexistent/route'
+
+        assert { last_response.not_found? }
+        assert { last_response.body.empty? }
+      end
+    end
+
+    it 'gives a distinct object to each request' do
+      get '/first'
+      assert { last_response.body == 'first' }
+
+      get '/second'
+      assert { last_response.body != 'first' }
+      assert { last_response.body == 'second' }
     end
   end
 
@@ -50,54 +83,6 @@ describe Hobby::App do
 
     def app
       described_class.app.new
-    end
-
-    describe Main do
-      Hobby::Verbs.each do |verb|
-        context 'when the request matches a route' do
-          it "matches #{verb} ''" do
-            send verb.downcase, ''
-            assert { last_response.ok? }
-            assert { verb == last_response.body }
-          end
-
-          it 'matches #{verb} /' do
-            send verb.downcase, '/'
-            assert { last_response.ok? }
-            assert { verb == last_response.body }
-          end
-
-          it 'matches #{verb} /route.json' do
-            send verb.downcase, '/route.json'
-            assert { last_response.ok? } 
-            assert { "#{verb} /route.json" == last_response.body }
-          end
-
-          it 'matches #{verb} /route/:id.json' do
-            send verb.downcase, '/route/1.json'
-            assert { last_response.ok? }
-            assert { last_response.body == '1' }
-          end
-
-          it 'matches #{verb} /:name' do
-            send verb.downcase, '/hobbit'
-            assert { last_response.ok? }
-            assert { last_response.body == 'hobbit' }
-
-            send verb.downcase, '/hello-hobbit'
-            assert { last_response.ok? }
-            assert { last_response.body == 'hello-hobbit' }
-          end
-        end
-
-        context 'when the request not matches a route' do
-          it 'responds with 404 status code' do
-            send verb.downcase, '/not/found'
-            assert { last_response.not_found? }
-            assert { last_response.body.empty? }
-          end
-        end
-      end
     end
 
     describe Map do
@@ -111,43 +96,6 @@ describe Hobby::App do
       it 'adds a middleware to the rack stack' do
         get '/use'
         assert { last_response.body == 'from use' }
-      end
-    end
-
-    describe Halt do
-      it 'halts the execution with a response' do
-        get '/halt'
-        assert { last_response.status == 501 }
-      end
-
-      it 'halts the execution with a finished response' do
-        get '/halt_finished'
-        assert { last_response.status == 404 }
-      end
-
-      it do
-        get '/increment_instance_variable'
-        assert { last_response.body == '1' }
-        get '/increment_instance_variable'
-        assert { last_response.body == '1' }
-      end
-
-      it do
-        get '/route'
-        assert { last_response.body == 'nested route' }
-
-        get '/route/'
-        assert { last_response.body == 'nested route' }
-      end
-
-      it do
-        browser = Rack::Test::Session.new Rack::MockSession.new (build_app described_class).new
-
-        browser.get '/route'
-        assert { browser.last_response.body == 'nested route' }
-
-        browser.get '/route/'
-        assert { browser.last_response.body == 'nested route' }
       end
     end
 
@@ -170,23 +118,20 @@ describe Hobby::App do
 
     describe Env do
       it do
-        get '/ping?1=2&3=4'
+        get '/query_string?1=2&3=4'
         assert { last_response.body == '1=2&3=4' }
-
-        get '/ping?why=42'
-        assert { last_response.body == 'why=42' }
       end
 
       it do
-        get '/for_request?key=value'
+        get '/access_params?key=value'
         assert { last_response.body == 'value' }
       end
 
       it do
-        get '/for_my'
+        get '/access_path_params_via_my'
         assert { last_response.body == 'true' }
 
-        get '/for_direct_path_params'
+        get '/access_path_params_via_env'
         assert { last_response.body == 'true' }
       end
     end
@@ -195,20 +140,6 @@ describe Hobby::App do
       it do
         get '/nested'
         assert { last_response.body == 'a:b:c' }
-      end
-
-      it 'should be able to access a route with and without /' do
-        get '/nested/route'
-        assert { last_response.body == 'nested route' }
-
-        get '/nested/route/'
-        assert { last_response.body == 'nested route' }
-
-        get '/nested/path_variable'
-        assert { last_response.body == 'path_variable' }
-
-        get '/nested/path_variable/'
-        assert { last_response.body == 'path_variable' }
       end
     end
   end
