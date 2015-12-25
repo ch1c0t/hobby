@@ -39,20 +39,22 @@ describe Hobby::Router do
   end
 
   before do
-    add_routes '/route.json', '/with-hyphen', '/hello/:name',
-      '/say/:something/to/:someone', '/route/:id.json'
+    add_routes '/with.dot', '/with-hyphen', '/hello/:name',
+      '/say/:something/to/:someone', '/route/:id.json', '/existent/only/for/GET'
   end
 
   def find_route route, verb = 'GET'
     FindRoute.new route, verb
   end
 
-  it { should find_route '/route.json' }
+  it { should find_route '/with.dot' }
   it { should find_route '/with-hyphen' }
-  it { should find_route '/route.json/' }
+  it { should find_route '/with.dot/' }
   it { should find_route '/with-hyphen/' }
+
+  it { should find_route '/existent/only/for/GET' }
   it { should_not find_route '/nonexistent' }
-  it { should_not find_route '/route.json', 'POST' }
+  it { should_not find_route '/existent/only/for/GET', 'POST' }
 
   it { should find_route('/hello/ololo').and_set_params(name: 'ololo') }
   it { should find_route('/route/66.json').and_set_params(id: '66') }
