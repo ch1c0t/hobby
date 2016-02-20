@@ -9,7 +9,7 @@ module Hobby
     end
 
     def route_for env
-      route, params = @routes[env.values_at('REQUEST_METHOD', 'PATH_INFO').join]
+      route, params = @routes["#{env['REQUEST_METHOD']}#{env['PATH_INFO']}"]
       env[:path_params] = params if params
       route
     end
