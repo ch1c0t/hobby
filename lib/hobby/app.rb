@@ -2,8 +2,8 @@ module Hobby
   module App
     def self.included app
       app.extend Singleton
-      app.builder, app.router = Builder.new, Router.new
-      app.request, app.response = Request, Response
+      app.builder, app.router = Rack::Builder.new, Router.new
+      app.request, app.response = Rack::Request, Rack::Response
     end
 
     module Singleton
