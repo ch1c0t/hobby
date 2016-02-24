@@ -3,6 +3,6 @@ self.router = Class.new {
   end
 
   def route_for _request
-    Proc.new { 'for any route' }
+    -> { 'for any route' }
   end
 }.new

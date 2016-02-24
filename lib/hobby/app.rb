@@ -33,7 +33,7 @@ module Hobby
         route = self.class.router.route_for (@env = env)
 
         if route
-          response.write instance_eval &route
+          response.write instance_exec &route
         else
           response.status = 404
         end
