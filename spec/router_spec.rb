@@ -1,51 +1,16 @@
 require 'helper'
 
-MAGIC_NUMBER = 42
+describe Hobby::Router, type: :router do
+  routes = %w!
+    /with.dot
+    /with-hyphen
+    /hello/:name
+    /say/:something/to/:someone
+    /route/:id.json
+    /existent/only/for/GET
+  !
 
-class FindRoute
-  def initialize path, verb
-    @path, @verb = path, verb
-    @env = env_for @path, @verb
-    @params_check = -> { true }
-  end
-
-  def matches? subject
-    route = subject.route_for @env
-    route.respond_to?(:call) && (route.call == MAGIC_NUMBER) && @params_check.call
-  end
-
-  def and_set_params **params
-    @params_check = -> {(params.to_a - @env[:path_params].to_a).empty?}
-    self
-  end
-
-  def env_for path, verb
-    {'REQUEST_METHOD' => verb, 'PATH_INFO' => path }
-  end
-
-  def description
-    'be found'
-  end
-
-  def failure_message
-    "Where is a route for #{@path}?"
-  end
-end
-
-describe Hobby::Router do
-  def add_routes *routes, verb: 'GET'
-    block = -> { MAGIC_NUMBER }
-    routes.each { |route| subject.add_route verb, route, &block }
-  end
-
-  before do
-    add_routes '/with.dot', '/with-hyphen', '/hello/:name',
-      '/say/:something/to/:someone', '/route/:id.json', '/existent/only/for/GET'
-  end
-
-  def find_route route, verb = 'GET'
-    FindRoute.new route, verb
-  end
+  before { add_routes *routes }
 
   it { should find_route '/with.dot' }
   it { should find_route '/with-hyphen' }
@@ -63,10 +28,6 @@ describe Hobby::Router do
            and_set_params(something: 'nothing', someone: 'no_one')
   end
 
-
-  def env_for path, verb = 'GET'
-    {'REQUEST_METHOD' => verb, 'PATH_INFO' => path }
-  end
 
   it 'handles empty path as /' do
     subject.add_route 'GET' do :root end
