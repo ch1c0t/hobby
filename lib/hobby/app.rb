@@ -18,8 +18,8 @@ module Hobby
       delegate [:map, :use] => :builder
 
       Verbs.each do |verb|
-        define_method verb.downcase do |path = nil, &route|
-          router.add_route verb, *path, &route
+        define_method verb.downcase do |path = '/', &route|
+          router.add_route verb, path, &route
         end
       end
     end

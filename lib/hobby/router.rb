@@ -4,7 +4,8 @@ module Hobby
       @routes = Routes.new
     end
 
-    def add_route verb, path = nil, &route
+    def add_route verb, path, &route
+      path = nil if path.eql? '/'
       @routes["#{verb}#{path}"] = route
     end
 

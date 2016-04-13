@@ -29,11 +29,13 @@ describe Hobby::Router, type: :router do
   end
 
 
-  it 'handles empty path as /' do
-    subject.add_route 'GET' do :root end
-    route = subject.route_for env_for ''
+  # Below is a bunch of implementation-dependent tests which should not really be there
+  # TODO: find a way to get rid of them
 
-    assert { route.call == :root }
+  it 'uses a verb to imply the root route' do
+    subject.add_route 'GET', '/' do :route end
+
+    assert { not subject.instance_variable_get(:@routes).include? 'GET//' }
   end
 
   it 'memoizes requests with params' do
