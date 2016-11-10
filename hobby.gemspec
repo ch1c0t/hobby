@@ -4,12 +4,11 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'hobby'
-  spec.version       = '0.0.0'
-  spec.authors       = ['Patricio Mac Adden']
-  spec.email         = ['patriciomacadden@gmail.com']
-  spec.description   = %q{A minimalistic microframework built on top of rack}
-  spec.summary       = %q{A minimalistic microframework built on top of rack}
-  spec.homepage      = 'https://github.com/patriciomacadden/hobbit'
+  spec.version       = '0.0.1'
+  spec.authors       = ['Anatoly Cherno']
+  spec.email         = ['anatoly.cherno@gmail.com']
+  spec.summary       = %q{A minimal DSL over rack}
+  spec.homepage      = 'https://github.com/ch1c0t/hobby'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files`.split($/)
