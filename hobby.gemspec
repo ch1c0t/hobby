@@ -4,9 +4,9 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'hobby'
-  spec.version       = '0.0.1'
-  spec.authors       = ['Anatoly Cherno']
-  spec.email         = ['anatoly.cherno@gmail.com']
+  spec.version       = '0.0.2'
+  spec.authors       = ['Anatoly Chernow']
+  spec.email         = ['chertoly@gmail.com']
   spec.summary       = %q{A minimal DSL over rack}
   spec.homepage      = 'https://github.com/ch1c0t/hobby'
   spec.license       = 'MIT'
