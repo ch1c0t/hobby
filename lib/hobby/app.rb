@@ -17,7 +17,7 @@ module Hobby
       extend Forwardable
       delegate [:map, :use] => :builder
 
-      Verbs.each do |verb|
+      VERBS.each do |verb|
         define_method verb.downcase do |path = '/', &route|
           router.add_route verb, path, &route
         end
