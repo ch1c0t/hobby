@@ -142,5 +142,12 @@ describe Hobby::App do
         assert { last_response.body == 'a:b:c' }
       end
     end
+
+    describe Decorator do
+      it do
+        get '/route'
+        assert { last_response.body == 'GET:initial:/route' }
+      end
+    end
   end
 end
