@@ -1,7 +1,7 @@
 module Hobby::RSpec
   module Router
     extend self
-    SOME_ROUTE = ->{}
+    SOME_ROUTE = ->{:some_route}
 
     def env_for path, verb = 'GET'
       {'REQUEST_METHOD' => verb, 'PATH_INFO' => path }
@@ -20,7 +20,7 @@ module Hobby::RSpec
 
         params_are_ok = (@params ? (@params.to_a - env[:path_params].to_a).empty? : true)
 
-        (route == SOME_ROUTE) && params_are_ok
+        route && (route.to_proc.call == SOME_ROUTE.call) && params_are_ok
       end
 
       chain :and_set_params do |**params|

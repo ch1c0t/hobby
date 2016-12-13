@@ -4,15 +4,30 @@ module Hobby
       @routes = Routes.new
     end
 
-    def add_route verb, path, &route
+    def add_route verb, path, &action
+      route = Route.new verb, path, &action
+
       path = nil if path.eql? '/'
       @routes["#{verb}#{path}"] = route
+
+      route
     end
 
     def route_for env
       route, params = @routes["#{env['REQUEST_METHOD']}#{env['PATH_INFO']}"]
       env[:path_params] = params if params
       route
+    end
+
+    class Route
+      attr_reader :verb, :path
+      def initialize verb, path, &action
+        @verb, @path, @action = verb, path, action
+      end
+
+      def to_proc
+        @action
+      end
     end
 
     class Routes < Hash
