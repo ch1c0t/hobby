@@ -1,6 +1,9 @@
 require 'helper'
+require 'router_matchers'
 
-describe Hobby::Router, type: :router do
+describe Hobby::Router do
+  include RouterMatchers
+
   routes = %w!
     /with.dot
     /with-hyphen
