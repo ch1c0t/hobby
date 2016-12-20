@@ -14,17 +14,17 @@ module RouterMatchers
 
   define :find_route do |path, verb = 'GET'|
     match do |subject|
-    env = env_for path, verb
-    route = subject.route_for env
+      env = env_for path, verb
+      route = subject.route_for env
 
-    params_are_ok = (@params ? (@params.to_a - env[:path_params].to_a).empty? : true)
+      params_are_ok = (@params ? (@params.to_a - env[:path_params].to_a).empty? : true)
 
-    route && (route.to_proc.call == SOME_ROUTE.call) && params_are_ok
-  end
+      route && (route.to_proc.call == SOME_ROUTE.call) && params_are_ok
+    end
 
-  chain :and_set_params do |**params|
-    @params = params
-  end
+    chain :and_set_params do |**params|
+      @params = params
+    end
   end
 
   def self.included example_group
