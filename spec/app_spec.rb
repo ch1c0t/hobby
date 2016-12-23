@@ -149,5 +149,12 @@ describe Hobby::App do
         assert { last_response.body == 'GET:initial:/route' }
       end
     end
+
+    describe Throw do
+      it do
+        get '/'
+        assert { last_response.status == 400 }
+      end
+    end
   end
 end

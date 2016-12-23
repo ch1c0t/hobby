@@ -37,15 +37,17 @@ module Hobby
 
   protected
     def handle env
-      route = self.class.router.route_for (@env = env)
+      catch :halt do
+        route = self.class.router.route_for (@env = env)
 
-      if route
-        response.write instance_exec &route
-      else
-        response.status = 404
+        if route
+          response.write instance_exec &route
+        else
+          response.status = 404
+        end
+
+        response
       end
-
-      response
     end
 
   private
