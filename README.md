@@ -1,15 +1,15 @@
-# Hobbit [![Build Status](http://img.shields.io/travis/patriciomacadden/hobbit.svg)](https://travis-ci.org/patriciomacadden/hobbit) [![Code Climate](http://img.shields.io/codeclimate/github/patriciomacadden/hobbit.svg)](https://codeclimate.com/github/patriciomacadden/hobbit) [![Code Climate Coverage](http://img.shields.io/codeclimate/coverage/github/patriciomacadden/hobbit.svg)](https://codeclimate.com/github/patriciomacadden/hobbit) [![Dependency Status](http://img.shields.io/gemnasium/patriciomacadden/hobbit.svg)](https://gemnasium.com/patriciomacadden/hobbit) [![Gem Version](http://img.shields.io/gem/v/hobbit.svg)](http://badge.fury.io/rb/hobbit)
+# Hobby
 
-A minimalistic microframework built on top of [Rack](http://rack.github.io/).
+A professional way to create [Rack](http://rack.github.io/)-based applications.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'hobbit'
+gem 'hobby'
 # or this if you want to use hobbit master
-# gem 'hobbit', github: 'patriciomacadden/hobbit'
+# gem 'hobbit', github: 'ch1c0t/hobbit'
 ```
 
 And then execute:
@@ -21,7 +21,7 @@ $ bundle
 Or install it yourself as:
 
 ```bash
-$ gem install hobbit
+$ gem install hobby
 ```
 
 ## Features
@@ -29,7 +29,7 @@ $ gem install hobbit
 * DSL inspired by [Sinatra](http://www.sinatrarb.com/).
 * [Speed](https://github.com/luislavena/bench-micro).
 * Extensible with standard ruby classes and modules, with no extra logic. See
-[hobbit-contrib](https://github.com/patriciomacadden/hobbit-contrib).
+[hobby-auth](https://github.com/ch1c0t/hobby-auth) and [hobby-json](https://github.com/ch1c0t/hobby-json).
 * Zero configuration.
 
 ## Philosophy
@@ -49,9 +49,10 @@ Hobbit applications are just instances of classes that inherits from
 Create a file called `app.rb`:
 
 ```ruby
-require 'hobbit'
+require 'hobby'
 
-class App < Hobbit::Base
+class App
+  include Hobby
   get '/' do
     'Hello World!'
   end
@@ -76,11 +77,10 @@ View your app at [http://localhost:9292](http://localhost:9292).
 
 ### Routes
 
-Every route is composed of a verb, a path (optional) and a block. When an
-incoming request matches a route, the block is executed and a response is sent
-back to the client. The return value of the block will be the `body` of the
-response. The `headers` and `status code` of the response will be calculated by
-`Hobbit::Response`, but you could modify it anyway you want it.
+Every route is composed of a verb, a path (optional) and an action(passed as a block).
+When an incoming request matches a route, the action is executed and a response is sent
+back to the client. The return value of the action will be the `body` of the
+response. 
 
 See an example:
 
@@ -115,8 +115,8 @@ end
 When a route gets called you have this methods available:
 
 * `env`: The Rack environment.
-* `request`: a `Hobbit::Request` instance.
-* `response`: a `Hobbit::Response` instance.
+* `request`: a `Rack::Request` instance.
+* `response`: a `Rack::Response` instance.
 
 And any other method defined in your application.
 
@@ -134,26 +134,23 @@ And any other method defined in your application.
 **POST** you must use the `Rack::MethodOverride` middleware. (See
 [Rack::MethodOverride](https://github.com/rack/rack/blob/master/lib/rack/methodoverride.rb)).
 
-#### Routes with parameters
-
-Besides the standard `GET` and `POST` parameters, you can have routes with
-parameters:
+#### Routes with variables
 
 ```ruby
-require 'hobbit'
+require 'hobby'
 
-class App < Hobbit::Base
+class App
+  include Hobby
   # matches both /hi/hobbit and /hi/patricio
   get '/hi/:name' do
-    # request.params is filled with the route paramters, like this:
-    "Hello #{request.params[:name]}"
+    "Hello #{my[:name]}"
   end
 end
 ```
 
 #### Redirecting
 
-If you look at Hobbit implementation, you may notice that there is no
+If you look at Hobby implementation, you may notice that there is no
 `redirect` method (or similar). This is because such functionality is provided
 by [Rack::Response](https://github.com/rack/rack/blob/master/lib/rack/response.rb)
 and for now we [don't wan't to repeat ourselves](http://en.wikipedia.org/wiki/Don't_repeat_yourself)
@@ -161,9 +158,11 @@ and for now we [don't wan't to repeat ourselves](http://en.wikipedia.org/wiki/Do
 another route, do it like this:
 
 ```ruby
-require 'hobbit'
+require 'hobby'
 
-class App < Hobbit::Base
+class App
+  include Hobby
+
   get '/' do
     response.redirect '/hi'
   end
@@ -176,10 +175,10 @@ end
 
 #### Halting
 
-To immediately stop a request within route you can use `halt`. 
+To immediately stop a request within route you can use `throw :halt`. 
 
 ```ruby
-require 'hobbit'
+require 'hobby'
 
 class App < Hobbit::Base
   use Rack::Session::Cookie, secret: SecureRandom.hex(64)
@@ -190,14 +189,14 @@ class App < Hobbit::Base
 
   get '/' do
     response.status = 401
-    halt response.finish
+    throw :halt, response.finish
   end
 end
 ```
 
 ### Built on top of rack
 
-Each Hobbit application is a Rack stack (See this
+Each Hobby application is a Rack stack (See this
 [blog post](http://m.onkey.org/ruby-on-rack-2-the-builder) for more
 information).
 
@@ -207,16 +206,20 @@ You can mount any Rack application to the stack by using the `map` class
 method:
 
 ```ruby
-require 'hobbit'
+require 'hobby'
 
-class InnerApp < Hobbit::Base
+class InnerApp
+  include Hobby
+
   # gets called when path_info = '/inner'
   get do
     'Hello InnerApp!'
   end
 end
 
-class App < Hobbit::Base
+class App
+  include Hobby
+
   map('/inner') { run InnerApp.new }
 
   get '/' do
@@ -230,9 +233,11 @@ end
 You can add any Rack middleware to the stack by using the `use` class method:
 
 ```ruby
-require 'hobbit'
+require 'hobby'
 
-class App < Hobbit::Base
+class App
+  include Hobby
+
   use Rack::Session::Cookie, secret: SecureRandom.hex(64)
   use Rack::ShowExceptions
 
@@ -257,11 +262,13 @@ attacks. The use of [rack-protection](https://github.com/rkh/rack-protection)
 is highly recommended:
 
 ```ruby
-require 'hobbit'
+require 'hobby'
 require 'rack/protection'
 require 'securerandom'
 
-class App < Hobbit::Base
+class App
+  include Hobby
+
   use Rack::Session::Cookie, secret: SecureRandom.hex(64)
   use Rack::Protection
 
@@ -284,7 +291,9 @@ In `app.rb`:
 ```ruby
 require 'hobbit'
 
-class App < Hobbit::Base
+class App
+  include Hobby
+
   get '/' do
     'Hello World!'
   end
@@ -329,7 +338,8 @@ module MyExtension
   end
 end
 
-class App < Hobbit::Base
+class App
+  include Hobby
   include MyExtension
 
   get '/' do
@@ -339,31 +349,15 @@ class App < Hobbit::Base
 end
 ```
 
-#### Hobbit::Contrib
+#### Available extensions
 
-[hobbit-contrib](https://github.com/patriciomacadden/hobbit-contrib) is a ruby
-gem that comes with a lot of hobbit extensions, such as:
-
-* `Hobbit::Render`: provides basic template rendering.
-* `Hobbit::Session`: provides helper methods for handling user sessions.
-* `Hobbit::Environment`: provides helper methods for handling application
-environments.
-* `Hobbit::Filter`: provides helper class methods for handling Sinatra-like
-filters.
-* `Hobbit::ErrorHandling`: provides helper class methods for handling
-Sinatra-like error handling.
-
-... And many more!
+* [hobby-auth](https://github.com/ch1c0t/hobby-auth): User authorization.
+* [hobby-json](https://github.com/ch1c0t/hobby-json): JSON requests and responses.
 
 ## Community
 
 * [Wiki](https://github.com/patriciomacadden/hobbit/wiki): Guides, how-tos and recipes
 * IRC: [#hobbitrb](irc://chat.freenode.net/#hobbitrb) on [http://freenode.net](http://freenode.net)
-
-## Presentations
-
-* Building web applications in Ruby, by [Krzysztof Wawer](https://github.com/wafcio)
-([english](https://speakerdeck.com/wafcio/hobbit-english), [polish](https://speakerdeck.com/wafcio/hobbit))
 
 ## Contributing
 
@@ -375,4 +369,4 @@ Sinatra-like error handling.
 
 ## License
 
-See the [LICENSE](https://github.com/patriciomacadden/hobbit/blob/master/LICENSE).
+See the [LICENSE](https://github.com/ch1c0t/hobby/blob/master/LICENSE).
