@@ -8,8 +8,8 @@ Add this line to your application's Gemfile:
 
 ```ruby
 gem 'hobby'
-# or this if you want to use hobbit master
-# gem 'hobbit', github: 'ch1c0t/hobbit'
+# or this if you want to use hobby master
+# gem 'hobby', github: 'ch1c0t/hobby'
 ```
 
 And then execute:
