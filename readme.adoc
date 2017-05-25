@@ -32,6 +32,73 @@ Or install it yourself as:
 $ gem install hobby
 ----
 
+[[introduction]]
+== Introduction
+
+Hobby features a Sinatra-like DSL, but in contrast to Sinatra,
+Hobby applications behave like usual Ruby classes.
+
+To create a Hobby application, you create a class and include `Hobby` in it.
+For example:
+
+[source,ruby]
+----
+class C
+  include Hobby
+
+  get("/hello") {
+    "Hello, world."
+  }
+end
+----
+
+Then, you can create an instance of `C` with
+
+[source,ruby]
+----
+C.new
+----
+
+which will return a Rack application(an object which complies to 
+http://rubydoc.info/github/rack/rack/master/file/SPEC[Rack SPEC]).
+
+You can set some state in `#initialize` and then use it in the route's action:
+
+[source,ruby]
+----
+class C
+  include Hobby
+
+  def initialize name
+    @name = name
+  end
+
+  get("/hello") {
+    "Hello, #{@name}."
+  }
+end
+----
+
+To run an application, you can put it into `config.ru`:
+
+[source,ruby]
+----
+run C.new 'Hobby'
+----
+
+and then use `rackup`:
+
+[source,bash]
+----
+$ rackup
+----
+
+Or, if you are using Rails, you can mount it in `config/routes.rb` with:
+[source,ruby]
+----
+mount C.new('Hobby') => '/some_path'
+----
+
 [[features]]
 Features
 ~~~~~~~~
@@ -55,46 +122,6 @@ and its extensions instead of providing such functionality.
 [[usage]]
 Usage
 ~~~~~
-
-Hobbit applications are just instances of classes that inherits from
-`Hobbit::Base`, which complies the
-http://rubydoc.info/github/rack/rack/master/file/SPEC[Rack SPEC].
-
-[[hello-world-example]]
-Hello World example
-^^^^^^^^^^^^^^^^^^^
-
-Create a file called `app.rb`:
-
-[source,ruby]
-----
-require 'hobby'
-
-class App
-  include Hobby
-  get '/' do
-    'Hello World!'
-  end
-end
-----
-
-Create a `config.ru` file:
-
-[source,ruby]
-----
-require './app'
-
-run App.new # or just `run App`
-----
-
-Run it with `rackup`:
-
-[source,bash]
-----
-$ rackup
-----
-
-View your app at http://localhost:9292.
 
 [[routes]]
 Routes
