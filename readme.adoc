@@ -102,15 +102,6 @@ logic. See https://github.com/ch1c0t/hobby-auth[hobby-auth] and
 https://github.com/ch1c0t/hobby-json[hobby-json].
 * Zero configuration.
 
-[[philosophy]]
-Philosophy
-~~~~~~~~~~
-
-* http://en.wikipedia.org/wiki/Don't_repeat_yourself[Don't repeat
-yourself]
-* Encourages the understanding and use of http://rack.github.io/[Rack]
-and its extensions instead of providing such functionality.
-
 [[usage]]
 Usage
 ~~~~~
