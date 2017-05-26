@@ -1,13 +1,5 @@
-[[hobby]]
-Hobby
------
-
-A professional way to create http://rack.github.io/[Rack]-based
-applications.
-
 [[installation]]
-Installation
-~~~~~~~~~~~~
+== Installation
 
 Add this line to your application's Gemfile:
 
