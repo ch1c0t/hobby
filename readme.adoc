@@ -191,35 +191,6 @@ class App
 end
 ----
 
-[[redirecting]]
-Redirecting
-+++++++++++
-
-If you look at Hobby implementation, you may notice that there is no
-`redirect` method (or similar). This is because such functionality is
-provided by
-https://github.com/rack/rack/blob/master/lib/rack/response.rb[Rack::Response]
-and for now we http://en.wikipedia.org/wiki/Don't_repeat_yourself[don't
-wan't to repeat ourselves] (obviously you can create an extension!). So,
-if you want to redirect to another route, do it like this:
-
-[source,ruby]
-----
-require 'hobby'
-
-class App
-  include Hobby
-
-  get '/' do
-    response.redirect '/hi'
-  end
-
-  get '/hi' do
-    'Hello World!'
-  end
-end
-----
-
 [[halting]]
 Halting
 +++++++
