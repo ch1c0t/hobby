@@ -427,28 +427,3 @@ Available extensions
 * https://github.com/ch1c0t/hobby-auth[hobby-auth]: User authorization.
 * https://github.com/ch1c0t/hobby-json[hobby-json]: JSON requests and
 responses.
-
-[[community]]
-Community
-~~~~~~~~~
-
-* https://github.com/patriciomacadden/hobbit/wiki[Wiki]: Guides, how-tos
-and recipes
-* IRC: irc://chat.freenode.net/#hobbitrb[#hobbitrb] on
-http://freenode.net
-
-[[contributing]]
-Contributing
-~~~~~~~~~~~~
-
-1.  Fork it
-2.  Create your feature branch (`git checkout -b my-new-feature`)
-3.  Commit your changes (`git commit -am 'Add some feature'`)
-4.  Push to the branch (`git push origin my-new-feature`)
-5.  Create new Pull Request
-
-[[license]]
-License
-~~~~~~~
-
-See the https://github.com/ch1c0t/hobby/blob/master/LICENSE[LICENSE].
