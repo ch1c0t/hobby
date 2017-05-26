@@ -146,8 +146,8 @@ end
 Such a method should be called with a path(optional) and an action(passed as a block).
 
 Calling such a method will lead to defining a route in the router.
-When an incoming request matches a route, the
-action is executed and a response is sent back to the client.
+When an incoming request matches a route,
+the action is executed and a response is sent back to the client.
 The return value of the action will be the `body` of the response.
 
 If a path was omitted
