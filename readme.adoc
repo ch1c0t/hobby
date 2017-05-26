@@ -215,14 +215,6 @@ class App < Hobbit::Base
 end
 ----
 
-[[built-on-top-of-rack]]
-Built on top of rack
-^^^^^^^^^^^^^^^^^^^^
-
-Each Hobby application is a Rack stack (See this
-http://m.onkey.org/ruby-on-rack-2-the-builder[blog post] for more
-information).
-
 [[mapping-applications]]
 Mapping applications
 ++++++++++++++++++++
