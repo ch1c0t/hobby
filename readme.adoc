@@ -102,13 +102,8 @@ logic. See https://github.com/ch1c0t/hobby-auth[hobby-auth] and
 https://github.com/ch1c0t/hobby-json[hobby-json].
 * Zero configuration.
 
-[[usage]]
-Usage
-~~~~~
-
 [[routes]]
-Routes
-^^^^^^
+== Routes
 
 For common HTTP verbs, Hobby provides a method named accordingly:
 
@@ -169,13 +164,15 @@ end
 were called.
 
 
-When a route gets called you have this methods available:
+[[default-helpers]]
+== Default helpers
 
-* `env`: The Rack environment.
+The following methods are predefined:
+
+* `env`: a `Hash`, the Rack environment.
 * `request`: a `Rack::Request` instance.
 * `response`: a `Rack::Response` instance.
-
-And any other method defined in your application.
+* `my`: a `Hash` which stores route variables.
 
 [[routes-with-variables]]
 Routes with variables
