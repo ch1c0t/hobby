@@ -114,7 +114,9 @@ For common HTTP verbs, Hobby provides a method named accordingly:
 
 [source,ruby]
 ----
-class App < Hobbit::Base
+class App
+  include Hobby
+
   get '/' do
     # ...
   end
