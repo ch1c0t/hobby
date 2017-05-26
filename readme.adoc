@@ -110,12 +110,7 @@ Usage
 Routes
 ^^^^^^
 
-Every route is composed of a verb, a path (optional) and an
-action(passed as a block). When an incoming request matches a route, the
-action is executed and a response is sent back to the client. The return
-value of the action will be the `body` of the response.
-
-See an example:
+For common HTTP verbs, Hobby provides a method named accordingly:
 
 [source,ruby]
 ----
@@ -146,6 +141,32 @@ class App < Hobbit::Base
 end
 ----
 
+Such a method should be called with a path(optional) and an action(passed as a block).
+
+Calling such a method will lead to defining a route in the router.
+When an incoming request matches a route, the
+action is executed and a response is sent back to the client.
+The return value of the action will be the `body` of the response.
+
+If a path was omitted
+[source,ruby]
+----
+get do
+  'something'
+end
+----
+
+the action is attached to the root route, like if
+[source,ruby]
+----
+get '/' do
+  'something'
+end
+----
+
+were called.
+
+
 When a route gets called you have this methods available:
 
 * `env`: The Rack environment.
@@ -153,22 +174,6 @@ When a route gets called you have this methods available:
 * `response`: a `Rack::Response` instance.
 
 And any other method defined in your application.
-
-[[available-methods]]
-Available methods
-+++++++++++++++++
-
-* `delete`
-* `get`
-* `head`
-* `options`
-* `patch`
-* `post`
-* `put`
-
-*Note*: Since most browsers don't support methods other than *GET* and
-*POST* you must use the `Rack::MethodOverride` middleware. (See
-https://github.com/rack/rack/blob/master/lib/rack/methodoverride.rb[Rack::MethodOverride]).
 
 [[routes-with-variables]]
 Routes with variables
