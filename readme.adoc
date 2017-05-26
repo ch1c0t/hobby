@@ -169,9 +169,9 @@ were called.
 
 The following methods are predefined:
 
-* `env`: a `Hash`, the Rack environment.
-* `request`: a `Rack::Request` instance.
-* `response`: a `Rack::Response` instance.
+* `env`: a `Hash`, http://www.rubydoc.info/github/rack/rack/master/file/SPEC#The_Environment[a Rack environment].
+* `request`: a http://www.rubydoc.info/gems/rack/Rack/Request[`Rack::Request`].
+* `response`: a http://www.rubydoc.info/gems/rack/Rack/Response[`Rack::Response`].
 * `my`: a `Hash` which stores route variables.
 
 [[routes-with-variables]]
