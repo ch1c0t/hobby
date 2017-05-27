@@ -105,7 +105,7 @@ https://github.com/ch1c0t/hobby-json[hobby-json].
 [[routes]]
 == Routes
 
-For common HTTP verbs, Hobby provides a method named accordingly:
+For common HTTP verbs, Hobby provides the route definers(methods named accordingly):
 
 [source,ruby]
 ----
@@ -138,9 +138,9 @@ class App
 end
 ----
 
-Such a method should be called with a path(optional) and an action(passed as a block).
+A definer should be called with a path(optional) and an action(passed as a block).
 
-Calling such a method will lead to defining a route in the router.
+Calling a definer has a side effect of defining a route in the router.
 When an incoming request matches a route,
 the action is executed and a response is sent back to the client.
 The return value of the action will be the `body` of the response.
