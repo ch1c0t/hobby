@@ -257,7 +257,7 @@ You can use `map` and `use` from http://www.rubydoc.info/gems/rack/Rack/Builder[
 === Mapping applications
 
 You can mount any Rack application to a Hobby application with `map`.
-Here is an example of mounting the application from <<using-initilize>>
+Here is an example of mounting the application from <<using-initialize>>
 to '/anatoly' and '/patricio' routes:
 
 [source,ruby]
