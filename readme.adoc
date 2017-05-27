@@ -214,6 +214,37 @@ class App
 end
 ----
 
+[[extensions]]
+== Extensions
+
+You can extend Hobby with usual modules:
+
+[source,ruby]
+----
+module MyExtension
+  def do_something
+    # do something
+  end
+end
+
+class App
+  include Hobby
+  include MyExtension
+
+  get '/' do
+    do_something
+    'Hello World!'
+  end
+end
+----
+
+[[available-extensions]]
+=== Available extensions
+
+* https://github.com/ch1c0t/hobby-json[hobby-json]: JSON requests and responses.
+* https://github.com/ch1c0t/hobby-auth[hobby-auth]: User authorization.
+
+
 [[mapping-applications]]
 Mapping applications
 ++++++++++++++++++++
@@ -275,36 +306,3 @@ end
 
 run App.new
 ----
-
-[[extensions]]
-Extensions
-^^^^^^^^^^
-
-You can extend Hobbit by creating standard ruby modules. See an example:
-
-[source,ruby]
-----
-module MyExtension
-  def do_something
-    # do something
-  end
-end
-
-class App
-  include Hobby
-  include MyExtension
-
-  get '/' do
-    do_something
-    'Hello World!'
-  end
-end
-----
-
-[[available-extensions]]
-Available extensions
-++++++++++++++++++++
-
-* https://github.com/ch1c0t/hobby-auth[hobby-auth]: User authorization.
-* https://github.com/ch1c0t/hobby-json[hobby-json]: JSON requests and
-responses.
