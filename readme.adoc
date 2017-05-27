@@ -35,6 +35,8 @@ For example:
 
 [source,ruby]
 ----
+require 'hobby'
+
 class C
   include Hobby
 
@@ -185,8 +187,6 @@ The following methods are predefined:
 
 [source,ruby]
 ----
-require 'hobby'
-
 class App
   include Hobby
   # matches both /hi/hobbit and /hi/patricio
@@ -201,8 +201,6 @@ end
 
 [source,ruby]
 ----
-require 'hobby'
-
 class App
   include Hobby
 
@@ -264,8 +262,6 @@ to '/anatoly' and '/patricio' routes:
 
 [source,ruby]
 ----
-require 'hobby'
-
 class App
   include Hobby
 
@@ -285,8 +281,6 @@ You can use any Rack middleware with `use`:
 
 [source,ruby]
 ----
-require 'hobby'
-
 class App
   include Hobby
 
