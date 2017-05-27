@@ -56,6 +56,10 @@ C.new
 which will return a Rack application(an object which complies to 
 http://rubydoc.info/github/rack/rack/master/file/SPEC[Rack SPEC]).
 
+Because a Hobby application is just a Ruby class,
+you can do with it pretty much anything
+you would expect to be able to do with a Ruby class.
+
 [[using-initialize]]
 === Using #initialize
 
@@ -72,6 +76,27 @@ class C
 
   get("/hello") {
     "Hello, #{@name}."
+  }
+end
+----
+
+[[using-intance-methods]]
+=== Using instance methods
+[source,ruby]
+----
+class C
+  include Hobby
+
+  def initialize name
+    @name = name
+  end
+
+  def name
+    @name.upcase
+  end
+
+  get("/hello") {
+    "Hello, #{name}."
   }
 end
 ----
