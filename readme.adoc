@@ -164,8 +164,8 @@ end
 were called.
 
 
-[[default-helpers]]
-== Default helpers
+[[default-methods]]
+== Default methods
 
 The following methods are predefined:
 
@@ -173,6 +173,7 @@ The following methods are predefined:
 * `request`: a http://www.rubydoc.info/gems/rack/Rack/Request[`Rack::Request`].
 * `response`: a http://www.rubydoc.info/gems/rack/Rack/Response[`Rack::Response`].
 * `my`: a `Hash` which stores route variables. See <<routes-with-variables>> for a usage example.
+* `halt`: a method, takes one argument(some `response`) and returns it immediately. See <<halting>> for a usage example.
 
 [[routes-with-variables]]
 === Routes with variables
@@ -191,16 +192,15 @@ end
 ----
 
 [[halting]]
-Halting
-+++++++
-
-To immediately stop a request within route you can use `throw :halt`.
+=== Halting
 
 [source,ruby]
 ----
 require 'hobby'
 
-class App < Hobbit::Base
+class App
+  include Hobby
+
   use Rack::Session::Cookie, secret: SecureRandom.hex(64)
 
   def session
@@ -209,7 +209,7 @@ class App < Hobbit::Base
 
   get '/' do
     response.status = 401
-    throw :halt, response.finish
+    halt response
   end
 end
 ----
