@@ -54,6 +54,9 @@ C.new
 which will return a Rack application(an object which complies to 
 http://rubydoc.info/github/rack/rack/master/file/SPEC[Rack SPEC]).
 
+[[using-initialize]]
+=== Using #initialize
+
 You can set some state in `#initialize` and then use it in the route's action:
 
 [source,ruby]
@@ -71,6 +74,8 @@ class C
 end
 ----
 
+[[how-to-run]]
+=== How to run
 To run an application, you can put it into `config.ru`:
 
 [source,ruby]
@@ -245,43 +250,38 @@ end
 * https://github.com/ch1c0t/hobby-auth[hobby-auth]: User authorization.
 
 
-[[mapping-applications]]
-Mapping applications
-++++++++++++++++++++
+[[using-rack-builder]]
+== Using Rack::Builder
 
-You can mount any Rack application to the stack by using the `map` class
-method:
+You can use `map` and `use` from http://www.rubydoc.info/gems/rack/Rack/Builder[Rack::Builder].
+
+[[mapping-applications]]
+=== Mapping applications
+
+You can mount any Rack application to a Hobby application with `map`.
+Here is an example of mounting the application from <<using-initilize>>
+to '/anatoly' and '/patricio' routes:
 
 [source,ruby]
 ----
 require 'hobby'
 
-class InnerApp
-  include Hobby
-
-  # gets called when path_info = '/inner'
-  get do
-    'Hello InnerApp!'
-  end
-end
-
 class App
   include Hobby
 
-  map('/inner') { run InnerApp.new }
+  map('/anatoly') { run C.new 'Anatoly' }
+  map('/patricio') { run C.new 'Patricio' }
 
   get '/' do
-    'Hello App!'
+    'Mapping app.'
   end
 end
 ----
 
 [[using-middleware]]
-Using middleware
-++++++++++++++++
+=== Using middleware
 
-You can add any Rack middleware to the stack by using the `use` class
-method:
+You can use any Rack middleware with `use`:
 
 [source,ruby]
 ----
@@ -298,11 +298,7 @@ class App
   end
 
   get '/' do
-    session[:name] = 'hobbit'
+    session[:name] = 'username'
   end
-
-  # more routes...
 end
-
-run App.new
 ----
