@@ -322,3 +322,19 @@ class App
   end
 end
 ----
+
+== Development
+
+To run the specs:
+
+[source,bash]
+----
+bundle exec rspec
+----
+
+To perform mutantion analysis:
+
+[source,bash]
+----
+bundle exec mutant --use rspec 'Hobby*'
+----
