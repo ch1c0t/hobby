@@ -323,6 +323,26 @@ class App
 end
 ----
 
+== Custom components
+
+Hobby was designed to be very modular.
+Many components of an application can be customized or replaced.
+
+[source,ruby]
+----
+class App
+  include Hobby
+
+  self.builder  = custom_builder
+  self.router   = custom_router
+  self.request  = custom_request
+  self.response = custom_response
+end
+----
+
+TODO: document the API which is expected from each of these components
+and provide usage examples.
+
 == Development
 
 To run the specs:
