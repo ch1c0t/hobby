@@ -65,7 +65,7 @@ module Hobby
       env.fetch :path_params, {}
     end
 
-    def halt response
+    def halt
       throw :halt, response
     end
 end

@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'devtools'
+gem 'devtools', github: 'mbj/devtools'
+gem 'mutant', github: 'mbj/mutant'
 gem 'minitest'
 gem 'minitest-power_assert'
 gem 'rack-test'

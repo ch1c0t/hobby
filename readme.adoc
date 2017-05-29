@@ -205,7 +205,7 @@ The following methods are predefined:
 * `request`: a http://www.rubydoc.info/gems/rack/Rack/Request[`Rack::Request`].
 * `response`: a http://www.rubydoc.info/gems/rack/Rack/Response[`Rack::Response`].
 * `my`: a `Hash` which stores route variables. See <<routes-with-variables>> for a usage example.
-* `halt`: a method, takes one argument(some `response`) and returns it immediately. See <<halting>> for a usage example.
+* `halt`: returns the `response` immediately. See <<halting>> for a usage example.
 
 [[routes-with-variables]]
 === Routes with variables
@@ -237,7 +237,8 @@ class App
 
   get '/' do
     response.status = 401
-    halt response
+    halt
+    'This line is never going to be returned.'
   end
 end
 ----

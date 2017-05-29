@@ -150,7 +150,7 @@ describe Hobby::App do
       end
     end
 
-    describe Throw do
+    describe Halting do
       it do
         get '/'
         assert { last_response.status == 400 }
