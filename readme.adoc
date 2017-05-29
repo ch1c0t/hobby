@@ -123,17 +123,6 @@ Or, if you are using Rails, you can mount it in `config/routes.rb` with:
 mount C.new('Hobby') => '/some_path'
 ----
 
-[[features]]
-Features
-~~~~~~~~
-
-* DSL inspired by http://www.sinatrarb.com/[Sinatra].
-* https://github.com/luislavena/bench-micro[Speed].
-* Extensible with standard ruby classes and modules, with no extra
-logic. See https://github.com/ch1c0t/hobby-auth[hobby-auth] and
-https://github.com/ch1c0t/hobby-json[hobby-json].
-* Zero configuration.
-
 [[routes]]
 == Routes
 
