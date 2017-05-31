@@ -43,7 +43,7 @@ module Hobby
         if route
           response.write instance_exec &route
         else
-          response.status = 404
+          not_found
         end
 
         response
@@ -67,5 +67,9 @@ module Hobby
 
     def halt
       throw :halt, response
+    end
+
+    def not_found
+      response.status = 404
     end
 end
