@@ -40,11 +40,8 @@ module Hobby
       catch :halt do
         route = self.class.router.route_for (@env = env)
 
-        if route
-          response.write instance_exec &route
-        else
-          not_found
-        end
+        body = route ? (instance_exec &route) : not_found
+        response.write body
 
         response
       end

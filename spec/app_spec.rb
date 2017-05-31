@@ -62,7 +62,6 @@ describe Hobby::App do
         get '/nonexistent/route'
 
         assert { last_response.not_found? }
-        assert { last_response.body.empty? }
       end
     end
 
