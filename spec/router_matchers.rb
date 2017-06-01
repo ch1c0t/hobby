@@ -17,7 +17,7 @@ module RouterMatchers
       env = env_for path, verb
       route = subject.route_for env
 
-      params_are_ok = (@params ? (@params.to_a - env[:path_params].to_a).empty? : true)
+      params_are_ok = (@params ? (@params.to_a - route.params.to_a).empty? : true)
 
       route && (route.to_proc.call == SOME_ROUTE.call) && params_are_ok
     end

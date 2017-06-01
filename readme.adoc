@@ -193,11 +193,12 @@ The following methods are predefined:
 * `env`: a `Hash`, http://www.rubydoc.info/github/rack/rack/master/file/SPEC#The_Environment[a Rack environment].
 * `request`: a http://www.rubydoc.info/gems/rack/Rack/Request[`Rack::Request`].
 * `response`: a http://www.rubydoc.info/gems/rack/Rack/Response[`Rack::Response`].
-* `my`: a `Hash` which stores route variables. See <<routes-with-variables>> for a usage example.
+* `route`: a `Hobby::Router::Route`, the currently executing route.
+* `route.params`, or a shortcut `my`: a `Hash` which stores route params. See <<routes-params>> for a usage example.
 * `halt`: returns the `response` immediately. See <<halting>> for a usage example.
 
-[[routes-with-variables]]
-=== Routes with variables
+[[routes-params]]
+=== Routes with params
 
 [source,ruby]
 ----

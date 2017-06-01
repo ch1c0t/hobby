@@ -15,7 +15,10 @@ module Hobby
 
     def route_for env
       route, params = @routes["#{env['REQUEST_METHOD']}#{env['PATH_INFO']}"]
-      env[:path_params] = params if params
+      
+      route = route.dup
+      route.params = params if params
+
       route
     end
   end

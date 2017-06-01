@@ -38,7 +38,7 @@ module Hobby
   protected
     def handle env
       catch :halt do
-        route = self.class.router.route_for (@env = env)
+        @route = self.class.router.route_for (@env = env)
 
         body = route ? (instance_exec &route) : not_found
         response.write body
@@ -48,7 +48,7 @@ module Hobby
     end
 
   private
-    attr_reader :env
+    attr_reader :env, :route
 
     def request
       @request ||= self.class.request.new env
@@ -59,7 +59,7 @@ module Hobby
     end
 
     def my
-      env.fetch :path_params, {}
+      route.params
     end
 
     def halt
