@@ -69,4 +69,9 @@ module Hobby
     def not_found
       response.status = 404
     end
+
+    def content_type type
+      mime_type = Rack::Mime::MIME_TYPES.fetch ".#{type}"
+      response.add_header 'Content-Type', mime_type
+    end
 end

@@ -155,5 +155,13 @@ describe Hobby::App do
         assert { last_response.status == 400 }
       end
     end
+
+    describe ContentType do
+      it do
+        get '/'
+        assert { last_response.body == "alert('string');" }
+        assert { last_response.headers['Content-Type'] == 'application/javascript' }
+      end
+    end
   end
 end
