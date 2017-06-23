@@ -11,6 +11,8 @@ describe Hobby::Router do
     /say/:something/to/:someone
     /route/:id.json
     /existent/only/for/GET
+    /js/:name.js
+    /dot/:first.:second
   !
 
   before { add_routes *routes }
@@ -29,6 +31,12 @@ describe Hobby::Router do
   it do
     should find_route('/say/nothing/to/no_one').
            and_set_params(something: 'nothing', someone: 'no_one')
+  end
+
+  it { should find_route('/js/with-js.js').and_set_params(name: 'with-js') }
+  it do
+    should find_route('/dot/aa.wtf').
+           and_set_params(first: 'aa', second: 'wtf')
   end
 
 

@@ -7,7 +7,7 @@ class Hobby::Router
 
     def []= key, route
       if key.include? ?:
-        string = key.gsub(/(:\w+)/) { "(?<#{$1[1..-1]}>[^/?#]+)" }
+        string = key.gsub(/(:\w+)/) { "(?<#{$1[1..-1]}>[^/?#.]+)" }
         @patterns[/^#{string}$/] = route
       else
         super and super "#{key}/", route

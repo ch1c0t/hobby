@@ -166,6 +166,8 @@ When an incoming request matches a route,
 the action is executed and a response is sent back to the client.
 The return value of the action will be the `body` of the response.
 
+=== Default route
+
 If a path was omitted
 [source,ruby]
 ----
@@ -184,6 +186,22 @@ end
 
 were called.
 
+=== Route params
+
+Can be accessed with `route.params` (or a shortcut `my`):
+
+[source,ruby]
+----
+# will match '/index', '/hobby', '/purpose', etc.
+get '/:name' do
+  route.params[:name]
+end
+
+# will match '/index.css', '/index.js', etc.
+get '/:name.:ext' do
+  "The name is #{my[:name]} and the ext is #{my[:ext]}."
+end
+----
 
 [[default-methods]]
 == Default methods
@@ -194,22 +212,8 @@ The following methods are predefined:
 * `request`: a http://www.rubydoc.info/gems/rack/Rack/Request[`Rack::Request`].
 * `response`: a http://www.rubydoc.info/gems/rack/Rack/Response[`Rack::Response`].
 * `route`: a `Hobby::Router::Route`, the currently executing route.
-* `route.params`, or a shortcut `my`: a `Hash` which stores route params. See <<routes-params>> for a usage example.
+* `route.params`, or a shortcut `my`: a `Hash` which stores route params. See <<route-params>> for a usage example.
 * `halt`: returns the `response` immediately. See <<halting>> for a usage example.
-
-[[routes-params]]
-=== Routes with params
-
-[source,ruby]
-----
-class App
-  include Hobby
-  # matches both /hi/hobbit and /hi/patricio
-  get '/hi/:name' do
-    "Hello #{my[:name]}"
-  end
-end
-----
 
 [[halting]]
 === Halting
