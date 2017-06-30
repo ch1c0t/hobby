@@ -8,6 +8,12 @@ class Hobby::Router
     attr_reader :verb, :path
     attr_accessor :action, :params
 
+    def with_params params
+      new_route = dup
+      new_route.params = params
+      new_route
+    end
+
     alias to_proc action
   end
 end

@@ -46,11 +46,11 @@ describe Hobby::Router do
     assert { subject.instance_variable_get(:@routes).include? 'GET/hello/ololo' }
   end
 
-  it 'dups a route for each request' do
+  it 'dups a route when requests have params' do
     router = described_class.new
-    route = router.add_route 'GET', '/some_path' do :some_action end
+    route = router.add_route 'GET', '/:some_path' do :some_action end
 
-    duped_route = router.route_for env_for '/some_path'
+    duped_route = router.route_for env_for '/:some_path'
 
     assert { not route.equal? duped_route }
   end

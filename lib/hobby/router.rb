@@ -15,11 +15,7 @@ module Hobby
 
     def route_for env
       route, params = @routes["#{env['REQUEST_METHOD']}#{env['PATH_INFO']}"]
-      
-      route = route.dup
-      route.params = params if params
-
-      route
+      params ? route.with_params(params) : route
     end
   end
 end
