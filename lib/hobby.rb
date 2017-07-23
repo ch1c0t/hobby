@@ -42,11 +42,14 @@ module Hobby
     def handle env
       catch :halt do
         @route = self.class.router.route_for (@env = env)
-
-        body = route ? (instance_exec &route) : not_found
-        response.write body
-
+        fill_body
         response
       end
+    end
+
+  private
+    def fill_body
+      body = route ? (instance_exec &route) : not_found
+      response.write body
     end
 end
