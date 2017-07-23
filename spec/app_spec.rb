@@ -163,5 +163,13 @@ describe Hobby::App do
         assert { last_response.headers['Content-Type'] == 'application/javascript' }
       end
     end
+
+    describe Status do
+      it do
+        get '/'
+        assert { last_response.status == 201 }
+        assert { last_response.body == 'Created.' }
+      end
+    end
   end
 end

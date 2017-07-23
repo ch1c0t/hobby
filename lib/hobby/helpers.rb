@@ -26,5 +26,9 @@ module Hobby
       mime_type = Rack::Mime::MIME_TYPES.fetch ".#{type}"
       response.add_header 'Content-Type', mime_type
     end
+
+    def status status
+      response.status = status
+    end
   end
 end
