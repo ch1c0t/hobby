@@ -346,7 +346,7 @@ To run the specs:
 bundle exec rspec
 ----
 
-To perform mutantion analysis:
+To perform mutation analysis:
 
 [source,bash]
 ----
