@@ -2,7 +2,7 @@ class Hobby::Router
   class Routes < Hash
     def initialize
       @patterns = {}
-      super { |hash, key| hash[key] = find key }
+      super { |hash, key| hash[key] = find_route key }
     end
 
     def []= key, route
@@ -16,7 +16,7 @@ class Hobby::Router
 
     private
 
-    def find key
+    def find_route key
       _, route = @patterns.find { |pattern, _| pattern.match key }
       [route, $~.names.map(&:to_sym).zip($~.captures).to_h] if route
     end
