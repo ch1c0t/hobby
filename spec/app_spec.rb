@@ -75,6 +75,17 @@ describe Hobby::App do
     end
   end
 
+  describe '#router' do
+    it 'gives a distinct router to each app' do
+      app = Class.new { include Hobby }
+
+      first_instance = app.new
+      second_instance = app.new
+
+      assert { not first_instance.router.equal? second_instance.router }
+    end
+  end
+
   describe :integration do
     before do
       described_class.app = build_app described_class
