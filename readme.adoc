@@ -285,8 +285,8 @@ to '/anatoly' and '/patricio' routes:
 class App
   include Hobby
 
-  map('/anatoly') { run C.new 'Anatoly' }
-  map('/patricio') { run C.new 'Patricio' }
+  map '/anatoly', to: C.new('Anatoly')
+  map '/patricio', to: C.new('Patricio')
 
   get '/' do
     'Mapping app.'

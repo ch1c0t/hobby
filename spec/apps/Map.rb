@@ -1,5 +1,2 @@
-map '/map' do
-  run Proc.new { |env| [200, {}, ['from map']] }
-end
-
+map '/map', to: Proc.new { |env| [200, {}, ['from map']] }
 get('/') { 'hello world' }

@@ -1,17 +1,15 @@
-map('/nested') do
-  nested_app = Class.new do
-    include Hobby::App
+nested_app = Class.new do
+  include Hobby::App
 
-    def initialize first, second
-      @a = first
-      @b = second
-      @c = yield
-    end
-
-    get do
-      "#{@a}:#{@b}:#{@c}"
-    end
+  def initialize first, second
+    @a = first
+    @b = second
+    @c = yield
   end
 
-  run nested_app.new(:a, :b) { :c }
+  get do
+    "#{@a}:#{@b}:#{@c}"
+  end
 end
+
+map '/nested', to: nested_app.new(:a, :b) { :c }

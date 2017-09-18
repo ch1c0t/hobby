@@ -23,8 +23,8 @@ module Hobby
       @uses << all
     end
 
-    def map path, &block
-      @maps << [path, block]
+    def map path, to:
+      @maps << [path, to]
     end
 
     attr_accessor :app
@@ -39,7 +39,9 @@ module Hobby
     private
       def fill_builder builder
         @uses.each { |all| builder.use *all }
-        @maps.each { |path, block| builder.map path, &block }
+        @maps.each { |path, app|
+          builder.map path do run app end
+        }
       end
   end
 end
