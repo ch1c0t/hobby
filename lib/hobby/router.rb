@@ -30,7 +30,7 @@ module Hobby
     attr_accessor :app
 
     def to_rack_app
-      builder = Rack::Builder.new
+      builder = Builder.new
       fill_builder builder
       builder.run app
       builder.to_app
@@ -43,16 +43,17 @@ module Hobby
       end
 
       def fill_with_uses builder
-        @uses.each { |all| builder.use *all }
+        @uses.each { |all| builder.add_use *all }
       end
 
       def fill_with_maps builder
         @maps.each { |path, app|
-          builder.map path do run app end
+          builder.add_map path do run app end
         }
       end
   end
 end
 
+require 'hobby/router/builder'
 require 'hobby/router/routes'
 require 'hobby/router/route'

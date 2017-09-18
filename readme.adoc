@@ -345,14 +345,9 @@ To run the specs:
 bundle exec rspec
 ----
 
-To perform mutation analysis do not run this:
+To perform mutation analysis:
 
 [source,bash]
 ----
 bundle exec mutant --use rspec 'Hobby*'
 ----
-
-Because it will eat all your memory and cpus.
-Looks like there is an instance of
-https://github.com/mbj/mutant#the-crash--stuck-problem-mri[this bug]
-in `Hobby::Router#fill_builder`.
