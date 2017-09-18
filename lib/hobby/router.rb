@@ -38,7 +38,15 @@ module Hobby
 
     private
       def fill_builder builder
+        fill_with_uses builder
+        fill_with_maps builder
+      end
+
+      def fill_with_uses builder
         @uses.each { |all| builder.use *all }
+      end
+
+      def fill_with_maps builder
         @maps.each { |path, app|
           builder.map path do run app end
         }
