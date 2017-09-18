@@ -2,6 +2,14 @@ module Hobby
   module Helpers
     attr_reader :env, :route
 
+    def router
+      @router ||= begin
+                    router = self.class.router.clone
+                    router.app = self
+                    router
+                  end
+    end
+
     def request
       @request ||= self.class.request.new env
     end

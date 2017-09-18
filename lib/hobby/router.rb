@@ -2,6 +2,7 @@ module Hobby
   class Router
     def initialize
       @routes = Routes.new
+      @uses, @maps = [], []
     end
 
     def add_route verb, path, &action
@@ -17,6 +18,31 @@ module Hobby
       route, params = @routes["#{env['REQUEST_METHOD']}#{env['PATH_INFO']}"]
       params ? route.with_params(params) : route
     end
+
+    def use *all
+      @uses << all
+    end
+
+    def map path, &block
+      @maps << [path, block]
+    end
+
+    # Hobby application.
+    attr_accessor :app
+
+    # Create a Rack application.
+    def to_app
+      builder = Rack::Builder.new
+      fill_builder builder
+      builder.run app
+      builder.to_app
+    end
+
+    private
+      def fill_builder builder
+        @uses.each { |all| builder.use *all }
+        @maps.each { |path, block| builder.map path, &block }
+      end
   end
 end
 

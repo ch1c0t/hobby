@@ -327,7 +327,6 @@ Many components of an application can be customized or replaced.
 class App
   include Hobby
 
-  self.builder  = custom_builder
   self.router   = custom_router
   self.request  = custom_request
   self.response = custom_response

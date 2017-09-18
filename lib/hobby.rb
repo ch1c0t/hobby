@@ -10,20 +10,19 @@ module Hobby
 
   def self.included app
     app.extend Singleton
-    app.builder, app.router = Rack::Builder.new, Router.new
+    app.router = Router.new
     app.request, app.response = Rack::Request, Rack::Response
   end
 
   module Singleton
-    attr_accessor :builder, :router, :request, :response
+    attr_accessor :router, :request, :response
 
     def new (*)
-      builder.run super
-      builder.to_app
+      super.router.to_app
     end
 
     extend Forwardable
-    delegate [:map, :use] => :builder
+    delegate [:map, :use] => :router
 
     VERBS.each do |verb|
       define_method verb.downcase do |path = '/', &action|
