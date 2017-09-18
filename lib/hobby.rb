@@ -18,7 +18,7 @@ module Hobby
     attr_accessor :router, :request, :response
 
     def new (*)
-      super.router.to_app
+      super.router.to_rack_app
     end
 
     extend Forwardable

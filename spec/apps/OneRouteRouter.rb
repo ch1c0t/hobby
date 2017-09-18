@@ -8,7 +8,7 @@ self.router = Class.new {
 
   attr_accessor :app
 
-  def to_app
+  def to_rack_app
     builder = Rack::Builder.new
     builder.run app
     builder.to_app

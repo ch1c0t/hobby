@@ -27,11 +27,9 @@ module Hobby
       @maps << [path, block]
     end
 
-    # Hobby application.
     attr_accessor :app
 
-    # Create a Rack application.
-    def to_app
+    def to_rack_app
       builder = Rack::Builder.new
       fill_builder builder
       builder.run app
