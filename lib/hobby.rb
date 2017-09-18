@@ -40,7 +40,7 @@ module Hobby
   protected
     def handle env
       catch :halt do
-        @route = self.class.router.route_for (@env = env)
+        @route = router.route_for (@env = env)
         fill_body
         response
       end
