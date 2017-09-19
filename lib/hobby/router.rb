@@ -48,9 +48,6 @@ module Hobby
 
       def fill_with_maps builder
         @maps.each { |map| builder.add_map map }
-        @maps.each { |path, app|
-          builder.add_map path do run app end
-        }
       end
   end
 end

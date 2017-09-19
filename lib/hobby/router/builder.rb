@@ -16,7 +16,7 @@ module Hobby
 
       class Map
         attr_reader :path, :app, :block
-        def initialize path, app = nil, &block
+        def initialize path, app, &block
           @path, @app, @block = path, app, block
         end
       end
