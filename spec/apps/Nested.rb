@@ -12,4 +12,4 @@ nested_app = Class.new do
   end
 end
 
-map '/nested', to: nested_app.new(:a, :b) { :c }
+map '/nested', nested_app.new(:a, :b) { :c }

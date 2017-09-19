@@ -23,8 +23,8 @@ module Hobby
       @uses << all
     end
 
-    def map path, to:
-      @maps << [path, to]
+    def map path, value
+      @maps << [path, value]
     end
 
     attr_accessor :app
