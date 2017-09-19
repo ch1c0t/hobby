@@ -2,10 +2,6 @@ module RouterMatchers
   extend self
   SOME_ROUTE = ->{:some_route}
 
-  def env_for path, verb = 'GET'
-    {'REQUEST_METHOD' => verb, 'PATH_INFO' => path }
-  end
-
   def add_routes *routes
     routes.each { |route| subject.add_route 'GET', route, &SOME_ROUTE }
   end

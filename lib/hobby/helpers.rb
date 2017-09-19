@@ -1,5 +1,7 @@
 module Hobby
   module Helpers
+    extend Forwardable
+
     attr_reader :env, :route
 
     def router
@@ -9,6 +11,8 @@ module Hobby
                     router
                   end
     end
+
+    delegate [:map, :use] => :router
 
     def request
       @request ||= self.class.request.new env

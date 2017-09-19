@@ -102,6 +102,46 @@ describe Hobby::App do
       end
     end
 
+    describe MapInsideInitialize do
+      describe 'without any passed arguments' do
+        def app
+          described_class.app.new
+        end
+
+        it do
+          get '/'
+          assert { last_response.body == 'hello world' }
+          get '/first_map'
+          assert { last_response.body == 'first mapapp' }
+          get '/second_map'
+          assert { last_response.body == 'second mapapp' }
+        end
+      end
+
+      describe 'with passed routes' do
+        def app
+          some_app = Class.new {
+            include Hobby
+            get { 'Some string.' }
+          }
+          routes = { '/third_map' => some_app.new }
+          described_class.app.new routes
+        end
+
+        it do
+          get '/'
+          assert { last_response.body == 'hello world' }
+          get '/first_map'
+          assert { last_response.body == 'first mapapp' }
+          get '/second_map'
+          assert { last_response.body == 'second mapapp' }
+
+          get '/third_map'
+          assert { last_response.body == 'Some string.' }
+        end
+      end
+    end
+
     describe Use do
       it 'adds a middleware to the rack stack' do
         get '/use'
