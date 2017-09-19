@@ -100,6 +100,11 @@ describe Hobby::App do
         get '/map'
         assert { last_response.body == 'from map' }
       end
+
+      it 'mounts an application to the rack stack with old deprecated syntax' do
+        get '/deprecated_map'
+        assert { last_response.body == 'from deprecated map' }
+      end
     end
 
     describe MapInsideInitialize do

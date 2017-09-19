@@ -23,8 +23,8 @@ module Hobby
       @uses << all
     end
 
-    def map path, value
-      @maps << [path, value]
+    def map path, app = nil, &block
+      @maps << Builder::Map.new(path, app, &block)
     end
 
     attr_accessor :app
@@ -47,6 +47,7 @@ module Hobby
       end
 
       def fill_with_maps builder
+        @maps.each { |map| builder.add_map map }
         @maps.each { |path, app|
           builder.add_map path do run app end
         }
