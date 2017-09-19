@@ -30,24 +30,17 @@ module Hobby
     attr_accessor :app
 
     def to_rack_app
-      builder = Builder.new
-      fill_builder builder
+      builder = create_builder
       builder.run app
       builder.to_app
     end
 
     private
-      def fill_builder builder
-        fill_with_uses builder
-        fill_with_maps builder
-      end
-
-      def fill_with_uses builder
+      def create_builder
+        builder = Builder.new
         @uses.each { |all| builder.add_use *all }
-      end
-
-      def fill_with_maps builder
         @maps.each { |map| builder.add_map map }
+        builder
       end
   end
 end
