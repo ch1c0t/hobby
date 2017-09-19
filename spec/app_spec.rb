@@ -149,6 +149,13 @@ describe Hobby::App do
       end
     end
 
+    describe UseInsideInitialize do
+      it do
+        get '/'
+        assert { last_response.content_type == 'application/json' }
+      end
+    end
+
     describe WithoutPath do
       it 'is accessible as /' do
         get '/'
