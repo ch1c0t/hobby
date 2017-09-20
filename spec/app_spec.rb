@@ -259,5 +259,18 @@ describe Hobby::App do
         assert { last_response.body == '404' }
       end
     end
+
+    describe UnshareableRouterUses do
+      it do
+        get '/1'
+        assert { last_response.content_type == 'application/html' }
+        
+        get '/2'
+        assert { last_response.content_type == 'application/json' }
+
+        get '/3'
+        assert { last_response.content_type == 'application/html' }
+      end
+    end
   end
 end
