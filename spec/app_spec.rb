@@ -234,5 +234,23 @@ describe Hobby::App do
         assert { last_response.body == 'Created.' }
       end
     end
+
+    describe UnshareableRouterState do
+      it do
+        get '/1/first'
+        assert { last_response.body == 'The name is A.' }
+        get '/1/second'
+        assert { last_response.body == 'The name is B.' }
+        get '/1/third'
+        assert { last_response.body == '404' }
+
+        get '/2/first'
+        assert { last_response.body == 'The name is A.' }
+        get '/2/second'
+        assert { last_response.body == 'The name is B.' }
+        get '/2/third'
+        assert { last_response.body == 'The name is C.' }
+      end
+    end
   end
 end
