@@ -25,3 +25,5 @@ map '/1', mapping_app.new
 
 routes = { '/third' => mapped_app.new('C') }
 map '/2', mapping_app.new(routes)
+
+map '/3', mapping_app.new

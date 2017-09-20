@@ -5,6 +5,10 @@ module Hobby
       @uses, @maps = [], []
     end
 
+    def initialize_copy _router
+      @maps = instance_variable_get(:@maps).dup
+    end
+
     def add_route verb, path, &action
       route = Route.new verb, path, &action
 

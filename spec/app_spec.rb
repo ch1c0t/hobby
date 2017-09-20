@@ -235,7 +235,7 @@ describe Hobby::App do
       end
     end
 
-    describe UnshareableRouterState do
+    describe UnshareableRouterMaps do
       it do
         get '/1/first'
         assert { last_response.body == 'The name is A.' }
@@ -250,6 +250,13 @@ describe Hobby::App do
         assert { last_response.body == 'The name is B.' }
         get '/2/third'
         assert { last_response.body == 'The name is C.' }
+
+        get '/3/first'
+        assert { last_response.body == 'The name is A.' }
+        get '/3/second'
+        assert { last_response.body == 'The name is B.' }
+        get '/3/third'
+        assert { last_response.body == '404' }
       end
     end
   end
