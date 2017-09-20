@@ -6,8 +6,7 @@ module Hobby
     end
 
     def initialize_copy _router
-      @uses = instance_variable_get(:@uses).dup
-      @maps = instance_variable_get(:@maps).dup
+      @uses, @maps = @uses.dup, @maps.dup
     end
 
     def add_route verb, path, &action
