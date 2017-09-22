@@ -138,7 +138,7 @@ class App
   put { 'Some string.' }
   patch { 'Some string.' }
   delete { 'Some string.' }
-  options { 'Some string.' }
+  # TODO: find a good example for `options`
 end
 ----
 
