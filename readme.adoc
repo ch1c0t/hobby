@@ -133,29 +133,12 @@ For common HTTP verbs, Hobby provides the route definers(methods named according
 class App
   include Hobby
 
-  get '/' do
-    # ...
-  end
-
-  post '/' do
-    # ...
-  end
-
-  put '/' do
-    # ...
-  end
-
-  patch '/' do
-    # ...
-  end
-
-  delete '/' do
-    # ...
-  end
-
-  options '/' do
-    # ...
-  end
+  get { 'Some string.' }
+  post { 'Some string.' }
+  put { 'Some string.' }
+  patch { 'Some string.' }
+  delete { 'Some string.' }
+  options { 'Some string.' }
 end
 ----
 
