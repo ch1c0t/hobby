@@ -5,7 +5,7 @@ class Mutant::Selector::Expression
   end
 end
 
-# Do no silence stdout and stderr of the running mutation.
+# Do not silence stdout and stderr of the running mutation.
 class Mutant::Isolation::Fork
   def result
     yield
