@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.version       = '0.1.1'
   spec.authors       = ['Anatoly Chernow']
   spec.email         = ['chertoly@gmail.com']
-  spec.summary       = %q{A minimal DSL over rack}
+  spec.summary       = %q{A professional way to create Rack applications.}
   spec.homepage      = 'https://github.com/ch1c0t/hobby'
   spec.license       = 'MIT'
 
