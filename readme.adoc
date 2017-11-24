@@ -40,9 +40,9 @@ require 'hobby'
 class C
   include Hobby
 
-  get("/hello") {
+  get "/hello" do
     "Hello, world."
-  }
+  end
 end
 ----
 
@@ -74,9 +74,9 @@ class C
     @name = name
   end
 
-  get("/hello") {
+  get "/hello" do
     "Hello, #{@name}."
-  }
+  end
 end
 ----
 
@@ -95,9 +95,9 @@ class C
     @name.upcase
   end
 
-  get("/hello") {
+  get "/hello" do
     "Hello, #{name}."
-  }
+  end
 end
 ----
 
