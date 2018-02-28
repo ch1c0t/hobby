@@ -272,5 +272,15 @@ describe Hobby::App do
         assert { last_response.content_type == 'application/html' }
       end
     end
+
+    describe ScriptName do
+      it do
+        get '/'
+        assert { last_response.body == '' }
+
+        get '/some/path'
+        assert { last_response.body = '/mounted' }
+      end
+    end
   end
 end

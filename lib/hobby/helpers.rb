@@ -42,5 +42,9 @@ module Hobby
     def status status
       response.status = status
     end
+
+    def script_name
+      env['SCRIPT_NAME']
+    end
   end
 end
