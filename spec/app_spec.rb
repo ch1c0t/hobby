@@ -279,7 +279,7 @@ describe Hobby::App do
         assert { last_response.body == '' }
 
         get '/some/path'
-        assert { last_response.body = '/mounted' }
+        assert { last_response.body == '/some/path' }
       end
     end
   end
