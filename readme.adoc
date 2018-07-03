@@ -27,8 +27,15 @@ $ gem install hobby
 [[introduction]]
 == Introduction
 
-Hobby features a Sinatra-like DSL, but in contrast to Sinatra,
-Hobby applications behave like usual Ruby classes.
+Hobby provides a Ruby DSL to create web applications. It is well suited both for standalone and inside-Rails use.
+
+The DSL looks a lot like Sinatra, but Hobby applications are
+
+* more reusable
+* more reliable
++ The API and the codebase are much smaller and fully covered with specs. 100% mutation coverage is constantly maintained.
+* https://github.com/luislavena/bench-micro#requestssec[more performant]
+* https://github.com/luislavena/bench-micro#memory-allocationrequest[consume less resources]
 
 To create a Hobby application, you create a class and include `Hobby` in it.
 For example:
