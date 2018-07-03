@@ -33,7 +33,8 @@ The DSL looks a lot like Sinatra, but Hobby applications are
 
 * more reusable
 * more reliable
-+ The API and the codebase are much smaller and fully covered with specs. 100% mutation coverage is constantly maintained.
++
+The API and the codebase are much smaller and fully covered with specs. 100% mutation coverage is constantly maintained.
 * https://github.com/luislavena/bench-micro#requestssec[more performant]
 * https://github.com/luislavena/bench-micro#memory-allocationrequest[consume less resources]
 
