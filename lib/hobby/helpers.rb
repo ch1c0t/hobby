@@ -44,7 +44,7 @@ module Hobby
     end
 
     def script_name
-      env['SCRIPT_NAME']
+      env.fetch 'SCRIPT_NAME'
     end
   end
 end

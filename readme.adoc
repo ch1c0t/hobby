@@ -340,5 +340,5 @@ To perform mutation analysis:
 
 [source,bash]
 ----
-bundle exec mutant --use rspec 'Hobby*'
+bundle exec mutant --use rspec 'Hobby*' --include lib --require hobby
 ----
