@@ -18,7 +18,7 @@ module RouterMatchers
       route && (route.to_proc.call == SOME_ROUTE.call) && params_are_ok
     end
 
-    chain :and_set_params do |**params|
+    chain :and_set_params do |params|
       @params = params
     end
   end
