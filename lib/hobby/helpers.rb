@@ -27,7 +27,7 @@ module Hobby
     end
 
     def halt
-      throw :halt, response
+      throw :halt, response.to_a
     end
 
     def not_found

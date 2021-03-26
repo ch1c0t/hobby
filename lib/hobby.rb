@@ -42,7 +42,7 @@ module Hobby
       catch :halt do
         @route = router.route_for (@env = env)
         fill_body
-        response
+        response.to_a
       end
     end
 
