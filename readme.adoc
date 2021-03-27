@@ -29,15 +29,6 @@ $ gem install hobby
 
 Hobby provides a Ruby DSL to create web applications. It is well suited both for standalone and inside-Rails use.
 
-The DSL looks a lot like Sinatra, but Hobby applications are
-
-* more reusable
-* more reliable
-+
-The API and the codebase are much smaller and fully covered with specs. 100% mutation coverage is constantly maintained.
-* https://github.com/luislavena/bench-micro#requestssec[more performant]
-* https://github.com/luislavena/bench-micro#memory-allocationrequest[consume less resources]
-
 To create a Hobby application, you create a class and include `Hobby` in it.
 For example:
 
@@ -334,11 +325,4 @@ To run the specs:
 [source,bash]
 ----
 bundle exec rspec
-----
-
-To perform mutation analysis:
-
-[source,bash]
-----
-bundle exec mutant --use rspec 'Hobby*' --include lib --require hobby
 ----
