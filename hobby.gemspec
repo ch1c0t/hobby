@@ -4,10 +4,11 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 Gem::Specification.new do |spec|
   spec.name          = 'hobby'
-  spec.version       = '0.2.1'
-  spec.authors       = ['Anatoly Chernow']
+  spec.version       = '0.2.2'
+  spec.authors       = ['Anatoly Chernov']
   spec.email         = ['chertoly@gmail.com']
-  spec.summary       = %q{A professional way to create Rack applications.}
+  spec.summary       = 'A Ruby DSL over Rack.'
+  spec.description   = 'A Ruby DSL over Rack. You can create with it reusable web applications, suitable for both standalone and inside-Rails use.'
   spec.homepage      = 'https://github.com/ch1c0t/hobby'
   spec.license       = 'MIT'
 

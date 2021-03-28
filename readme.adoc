@@ -1,3 +1,8 @@
+[[introduction]]
+== Introduction
+
+A Ruby DSL over Rack. You can create with it reusable web applications, suitable for both standalone and inside-Rails use.
+
 [[installation]]
 == Installation
 
@@ -24,10 +29,8 @@ Or install it yourself as:
 $ gem install hobby
 ----
 
-[[introduction]]
-== Introduction
-
-Hobby provides a Ruby DSL to create web applications. It is well suited both for standalone and inside-Rails use.
+[[usage]]
+== Usage
 
 To create a Hobby application, you create a class and include `Hobby` in it.
 For example:
