@@ -27,8 +27,8 @@ module Hobby
       @uses << all
     end
 
-    def map path, app = nil, &block
-      @maps << Builder::Map.new(path, app, &block)
+    def map path, app
+      @maps << [path, app]
     end
 
     attr_accessor :app
@@ -41,14 +41,17 @@ module Hobby
 
     private
       def create_builder
-        builder = Builder.new
-        @uses.each { |all| builder.add_use *all }
-        @maps.each { |map| builder.add_map map }
+        builder = Rack::Builder.new
+
+        @uses.each { |all| builder.use *all }
+        @maps.each { |path, app|
+          builder.map path do run app end
+        }
+
         builder
       end
   end
 end
 
-require 'hobby/router/builder'
 require 'hobby/router/routes'
 require 'hobby/router/route'

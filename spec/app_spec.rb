@@ -22,13 +22,13 @@ def build_app described_class
 
   eval %!
     Class.new do
-      include Hobby::App
+      include Hobby
       #{body}
     end
   !
 end
 
-describe Hobby::App do
+describe Hobby do
   include Rack::Test::Methods
 
   describe '.new' do
@@ -39,7 +39,7 @@ describe Hobby::App do
 
     context 'an app without nested app(s)' do
       let(:subject) { build_app(Main).new }
-      it { should be_a Hobby::App }
+      it { should be_a Hobby }
     end
   end
 
@@ -99,11 +99,6 @@ describe Hobby::App do
       it 'mounts an application to the rack stack' do
         get '/map'
         assert { last_response.body == 'from map' }
-      end
-
-      it 'mounts an application to the rack stack with old deprecated syntax' do
-        get '/deprecated_map'
-        assert { last_response.body == 'from deprecated map' }
       end
     end
 

@@ -5,7 +5,6 @@ require 'hobby/router'
 require 'hobby/helpers'
 
 module Hobby
-  App = Hobby # to stay compatible with old code
   VERBS = %w[DELETE GET HEAD OPTIONS PATCH POST PUT]
 
   def self.included app

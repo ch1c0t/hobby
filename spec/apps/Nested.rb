@@ -1,5 +1,5 @@
 nested_app = Class.new do
-  include Hobby::App
+  include Hobby
 
   def initialize first, second
     @a = first

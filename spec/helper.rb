@@ -1,5 +1,4 @@
 require 'hobby'
-require_relative 'mutant_patches' if defined? Mutant
 
 require 'minitest'
 require 'minitest-power_assert'
