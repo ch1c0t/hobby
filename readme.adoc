@@ -56,7 +56,7 @@ C.new
 ----
 
 which will return a Rack application(an object which complies to 
-http://rubydoc.info/github/rack/rack/master/file/SPEC[Rack SPEC]).
+https://github.com/rack/rack/blob/master/SPEC.rdoc[Rack SPEC]).
 
 Because a Hobby application is just a Ruby class,
 you can do with it pretty much anything
