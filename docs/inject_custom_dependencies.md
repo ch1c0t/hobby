@@ -1,20 +1,20 @@
 You can inject custom dependencies into your apps as follows:
 
 ```ruby
-class Router < Hobby::Router
+class CustomRouter < Hobby::Router
 end
 
-class Request < Rack::Request
+class CustomRequest < Rack::Request
 end
 
-class Response < Rack::Response
+class CustomResponse < Rack::Response
 end
 
 class App
   include Hobby
 
-  self.router   = Router.new
-  self.request  = Rack::Request
-  self.response = Rack::Response
+  self.router   = CustomRouter.new
+  self.request  = CustomRequest
+  self.response = CustomResponse
 end
 ```
